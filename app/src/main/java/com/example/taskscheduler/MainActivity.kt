@@ -25,11 +25,12 @@ class MainActivity : AppCompatActivity() {
     lateinit var mGoogleSignInClient: GoogleSignInClient
     var firebaseAuth = FirebaseAuth.getInstance()
 
-
+//check if already signed in
     override fun onStart() {
         super.onStart()
         if(GoogleSignIn.getLastSignedInAccount(this)!=null){
-            Log.d(TAG,"onstart "+firebaseAuth.currentUser?.email.toString())
+            val email = firebaseAuth.currentUser?.email.toString()
+            navigate(email)
         }
     }
 
@@ -85,11 +86,16 @@ class MainActivity : AppCompatActivity() {
         val credentials = GoogleAuthProvider.getCredential(account.idToken, null)
         firebaseAuth.signInWithCredential(credentials).addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                val intent = Intent(this, DisplayTasks::class.java)
-                intent.putExtra("gmail", account.email)
-                startActivity(intent)
+                navigate(account.email)
+
             }
         }
+    }
+
+    private fun navigate(email: String?) {
+        val intent = Intent(this, DisplayTasks::class.java)
+        intent.putExtra("gmail",email)
+        startActivity(intent)
     }
 
     private fun signInGoogle() {
