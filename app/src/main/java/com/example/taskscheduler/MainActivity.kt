@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.taskscheduler.databinding.ActivityMainBinding
@@ -24,9 +23,15 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     lateinit var mGoogleSignInClient: GoogleSignInClient
-    val Req_Code: Int = 123
     var firebaseAuth = FirebaseAuth.getInstance()
-    private lateinit var googleSignInActivity: ActivityResultLauncher<Intent>
+
+
+    override fun onStart() {
+        super.onStart()
+        if(GoogleSignIn.getLastSignedInAccount(this)!=null){
+            Log.d(TAG,"onstart "+firebaseAuth.currentUser?.email.toString())
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,7 +73,7 @@ class MainActivity : AppCompatActivity() {
             Log.d(TAG, "handle result $account")
             if (account != null) {
                 //  navigate to display tasks
-                navigate(account)
+                getCredentials(account)
             }
         } catch (e: ApiException) {
             Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show()
@@ -76,7 +81,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun navigate(account: GoogleSignInAccount) {
+    private fun getCredentials(account: GoogleSignInAccount) {
         val credentials = GoogleAuthProvider.getCredential(account.idToken, null)
         firebaseAuth.signInWithCredential(credentials).addOnCompleteListener { task ->
             if (task.isSuccessful) {
