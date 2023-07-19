@@ -3,7 +3,9 @@ package com.example.taskscheduler
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.taskscheduler.databinding.ActivityMainBinding
@@ -16,6 +18,7 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 
+private const val TAG = "MainActivity tag"
 
 class MainActivity : AppCompatActivity() {
 
@@ -23,6 +26,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var mGoogleSignInClient: GoogleSignInClient
     val Req_Code: Int = 123
     var firebaseAuth = FirebaseAuth.getInstance()
+    private lateinit var googleSignInActivity: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +53,7 @@ class MainActivity : AppCompatActivity() {
         registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
         ) {
+            Log.d(TAG, "res code ${it.resultCode} ${Activity.RESULT_OK} ${it.data}")
             if (it.resultCode == Activity.RESULT_OK) {
                 val task: Task<GoogleSignInAccount> =
                     GoogleSignIn.getSignedInAccountFromIntent(it.data)
@@ -60,12 +65,14 @@ class MainActivity : AppCompatActivity() {
     private fun handleResult(task: Task<GoogleSignInAccount>) {
         try {
             val account: GoogleSignInAccount? = task.getResult(ApiException::class.java)
+            Log.d(TAG, "handle result $account")
             if (account != null) {
                 //  navigate to display tasks
                 navigate(account)
             }
         } catch (e: ApiException) {
-            Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show()
+            Log.d(TAG, "handle result " + e.message)
         }
     }
 
