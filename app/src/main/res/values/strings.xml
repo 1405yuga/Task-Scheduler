@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Task Scheduler</string>
+    <string name="signin_with_google">SignIn with Google</string>
 </resources>
