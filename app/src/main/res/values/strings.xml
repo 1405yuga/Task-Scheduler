@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">Task Scheduler</string>
     <string name="signin_with_google">SignIn with Google</string>
-    <string name="default_web_client_id" />
+    <string name="web_client_id">841738029172-l2ioevmlpr5d8o7v9v6mtfblurrd3ftj.apps.googleusercontent.com</string>
 </resources>
