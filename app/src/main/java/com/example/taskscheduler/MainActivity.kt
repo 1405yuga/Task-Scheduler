@@ -96,6 +96,7 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, DisplayTasks::class.java)
         intent.putExtra("gmail",email)
         startActivity(intent)
+        finish()
     }
 
     private fun signInGoogle() {
