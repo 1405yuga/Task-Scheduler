@@ -2,4 +2,5 @@
     <string name="app_name">Task Scheduler</string>
     <string name="signin_with_google">SignIn with Google</string>
     <string name="web_client_id">841738029172-1iqqtf8oaqsenc4mmglvsb73q38s1cb8.apps.googleusercontent.com</string>
+    <string name="signout">SignOut</string>
 </resources>
