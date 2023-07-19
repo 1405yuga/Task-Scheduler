@@ -14,6 +14,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 
 
 class MainActivity : AppCompatActivity() {
@@ -46,27 +47,41 @@ class MainActivity : AppCompatActivity() {
     //create intent to display available google signinOptions
     private val getResult =
         registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()) {
-            if(it.resultCode == Activity.RESULT_OK){
-                val task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(it.data)
+            ActivityResultContracts.StartActivityForResult()
+        ) {
+            if (it.resultCode == Activity.RESULT_OK) {
+                val task: Task<GoogleSignInAccount> =
+                    GoogleSignIn.getSignedInAccountFromIntent(it.data)
                 handleResult(task)
             }
         }
 
     //get the google account
     private fun handleResult(task: Task<GoogleSignInAccount>) {
-        try{
-            val account : GoogleSignInAccount? = task.getResult(ApiException::class.java)
-            if(account!=null){
-                // TODO: navigate to display tasks 
+        try {
+            val account: GoogleSignInAccount? = task.getResult(ApiException::class.java)
+            if (account != null) {
+                //  navigate to display tasks
+                navigate(account)
             }
-        }catch(e : ApiException){
-            Toast.makeText(this,e.toString(),Toast.LENGTH_SHORT).show()
+        } catch (e: ApiException) {
+            Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun signInGoogle(){
-        val signInIntent : Intent = mGoogleSignInClient.signInIntent
+    private fun navigate(account: GoogleSignInAccount) {
+        val credentials = GoogleAuthProvider.getCredential(account.idToken, null)
+        firebaseAuth.signInWithCredential(credentials).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val intent = Intent(this, DisplayTasks::class.java)
+                intent.putExtra("gmail", account.email)
+                startActivity(intent)
+            }
+        }
+    }
+
+    private fun signInGoogle() {
+        val signInIntent: Intent = mGoogleSignInClient.signInIntent
         getResult.launch(signInIntent)
 
     }
