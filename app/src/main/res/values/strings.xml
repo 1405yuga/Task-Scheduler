@@ -11,4 +11,6 @@
     <string name="user_name">User Name</string>
     <string name="xyz_gmail_com">xyz@gmail.com</string>
     <string name="account">Account</string>
+    <string name="documentation">Documentation</string>
+    <string name="about">About</string>
 </resources>
