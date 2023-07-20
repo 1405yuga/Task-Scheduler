@@ -47,6 +47,16 @@ class DisplayTasks : AppCompatActivity() {
             }
 
         }
+        binding.navigationView.setNavigationItemSelectedListener {menuItem->
+            when (menuItem.itemId) {
+                R.id.signOut -> {
+                    createAlertDialog()
+                    true
+                }
+                else -> false
+            }
+
+        }
 
         val gmail: String? = intent.getStringExtra("gmail")
         Log.d(TAG, "GMAIL : " + gmail)
