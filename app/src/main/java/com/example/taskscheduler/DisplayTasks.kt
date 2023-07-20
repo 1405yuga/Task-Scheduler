@@ -1,13 +1,17 @@
 package com.example.taskscheduler
 
+import android.app.ProgressDialog.show
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.taskscheduler.databinding.ActivityDisplayTasksBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 private const val TAG = "DisplayTasks tag"
 
@@ -30,12 +34,8 @@ class DisplayTasks : AppCompatActivity() {
         binding.topAppBar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.signOut -> {
-                    // TODO: create alert dialog
-                    mGoogleSignInClient.signOut().addOnCompleteListener {
-                        val intent = Intent(this,MainActivity::class.java)
-                        startActivity(intent)
-                        finish()
-                    }
+                    //  create alert dialog
+                    createAlertDialog()
                     true
                 }
                 else -> false
@@ -47,5 +47,25 @@ class DisplayTasks : AppCompatActivity() {
         Log.d(TAG, "GMAIL : " + gmail)
 
 
+    }
+
+    private fun createAlertDialog() {
+        MaterialAlertDialogBuilder(this)
+            .setTitle(resources.getString(R.string.signout))
+            .setMessage("Are you sure you want to sign Out?")
+            .setPositiveButton("Yes") { dialog, which ->
+            // Respond to positive button press
+                mGoogleSignInClient.signOut().addOnCompleteListener {
+                    val intent = Intent(this,MainActivity::class.java)
+                    dialog.dismiss()
+                    startActivity(intent)
+                    finish()
+                }
+            }
+            .setNegativeButton("No"){ dialog, which ->
+                Toast.makeText(this,"Sign Out cancelled",Toast.LENGTH_SHORT).show()
+                dialog.dismiss()
+            }
+            .show()
     }
 }
