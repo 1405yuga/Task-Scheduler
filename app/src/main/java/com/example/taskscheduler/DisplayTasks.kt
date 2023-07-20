@@ -1,7 +1,5 @@
 package com.example.taskscheduler
 
-import android.app.ProgressDialog.show
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -20,21 +18,27 @@ class DisplayTasks : AppCompatActivity() {
     private lateinit var binding: ActivityDisplayTasksBinding
     private lateinit var mGoogleSignInClient: GoogleSignInClient
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityDisplayTasksBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
+    override fun onStart() {
+        super.onStart()
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.web_client_id))
             .requestEmail()
             .build()
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityDisplayTasksBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        binding.topAppBar.setNavigationOnClickListener {
+            Log.d(TAG, "navigation clicked")
+        }
 
         binding.topAppBar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.signOut -> {
-                    //  create alert dialog
                     createAlertDialog()
                     true
                 }
@@ -54,16 +58,16 @@ class DisplayTasks : AppCompatActivity() {
             .setTitle(resources.getString(R.string.signout))
             .setMessage("Are you sure you want to sign Out?")
             .setPositiveButton("Yes") { dialog, which ->
-            // Respond to positive button press
+                // Respond to positive button press
                 mGoogleSignInClient.signOut().addOnCompleteListener {
-                    val intent = Intent(this,MainActivity::class.java)
+                    val intent = Intent(this, MainActivity::class.java)
                     dialog.dismiss()
                     startActivity(intent)
                     finish()
                 }
             }
-            .setNegativeButton("No"){ dialog, which ->
-                Toast.makeText(this,"Sign Out cancelled",Toast.LENGTH_SHORT).show()
+            .setNegativeButton("No") { dialog, which ->
+                Toast.makeText(this, "Sign Out cancelled", Toast.LENGTH_SHORT).show()
                 dialog.dismiss()
             }
             .show()
