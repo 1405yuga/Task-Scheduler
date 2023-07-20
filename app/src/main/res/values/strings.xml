@@ -3,4 +3,8 @@
     <string name="signin_with_google">SignIn with Google</string>
     <string name="web_client_id">841738029172-1iqqtf8oaqsenc4mmglvsb73q38s1cb8.apps.googleusercontent.com</string>
     <string name="signout">SignOut</string>
+    <string name="task">Task</string>
+    <string name="details">Details</string>
+    <string name="_0_0_pm">0:0 pm</string>
+    <string name="_11_10_2001">11-10-2001</string>
 </resources>
