@@ -10,4 +10,5 @@
     <string name="add_task">add task</string>
     <string name="user_name">User Name</string>
     <string name="xyz_gmail_com">xyz@gmail.com</string>
+    <string name="account">Account</string>
 </resources>
