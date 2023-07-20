@@ -33,6 +33,7 @@ class DisplayTasks : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.topAppBar.setNavigationOnClickListener {
+            //binding.drawerLayout.open()
             Log.d(TAG, "navigation clicked")
         }
 
