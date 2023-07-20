@@ -13,4 +13,5 @@
     <string name="account">Account</string>
     <string name="documentation">Documentation</string>
     <string name="about">About</string>
+    <string name="settings">Settings</string>
 </resources>
