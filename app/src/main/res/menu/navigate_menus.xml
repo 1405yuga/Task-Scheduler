@@ -17,6 +17,14 @@
                 android:title="@string/settings" />
         </menu>
     </item>
+    <item android:title="@string/documentations">
+        <menu>
+            <item
+                android:id="@+id/about"
+                android:icon="@drawable/baseline_about_24"
+                android:title="@string/about" />
+        </menu>
+    </item>
 
 
 
