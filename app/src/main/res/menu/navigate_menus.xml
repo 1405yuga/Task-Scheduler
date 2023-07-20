@@ -23,6 +23,10 @@
                 android:id="@+id/about"
                 android:icon="@drawable/baseline_about_24"
                 android:title="@string/about" />
+            <item
+                android:id="@+id/doc"
+                android:icon="@drawable/baseline_documentations_24"
+                android:title="@string/documentations" />
         </menu>
     </item>
 
