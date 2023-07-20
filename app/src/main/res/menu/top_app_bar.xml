@@ -5,6 +5,7 @@
         android:id="@+id/signOut"
         android:icon="@drawable/logout"
         android:title="@string/signout"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom"
+        android:iconTint="?attr/colorControlNormal"/>
 
 </menu>
