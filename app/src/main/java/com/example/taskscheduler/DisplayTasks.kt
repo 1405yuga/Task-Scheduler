@@ -53,7 +53,6 @@ class DisplayTasks : AppCompatActivity() {
 
         binding.topAppBar.setNavigationOnClickListener {
             binding.drawerLayout.open()
-            Log.d(TAG, "navigation clicked")
         }
 
         binding.navigationView.setNavigationItemSelectedListener { menuItem ->
