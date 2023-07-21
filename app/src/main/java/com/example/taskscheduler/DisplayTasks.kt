@@ -73,6 +73,11 @@ class DisplayTasks : AppCompatActivity() {
                     true
                 }
 
+                R.id.exit -> {
+                    finish()
+                    true
+                }
+
                 else -> false
             }
 
