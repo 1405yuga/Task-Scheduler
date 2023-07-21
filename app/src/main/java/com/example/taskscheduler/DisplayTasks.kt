@@ -3,11 +3,13 @@ package com.example.taskscheduler
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import coil.load
 import com.example.taskscheduler.databinding.ActivityDisplayTasksBinding
 import com.example.taskscheduler.model.TaskViewModel
 import com.example.taskscheduler.model.TaskViewModelFactory
@@ -45,7 +47,8 @@ class DisplayTasks : AppCompatActivity() {
         setContentView(binding.root)
 
         setData()
-        headerbinding()
+        headerBinding()
+
         binding.topAppBar.setNavigationOnClickListener {
             binding.drawerLayout.open()
             Log.d(TAG, "navigation clicked")
@@ -81,9 +84,15 @@ class DisplayTasks : AppCompatActivity() {
         viewModel.setUserData(firebaseUser.email, firebaseUser.displayName,firebaseUser.photoUrl)
     }
 
-    private fun headerbinding() {
+    private fun headerBinding() {
         val header = binding.navigationView.getHeaderView(0)
         header.apply {
+            viewModel.userPhotoUrl.observe(this@DisplayTasks){
+                findViewById<ImageView>(R.id.user_image).load(it){
+                    placeholder(R.drawable.loading_animation)
+                    error(R.drawable.account_outline)
+                }
+            }
             viewModel.userDisplayName.observe(this@DisplayTasks) {
                 findViewById<TextView>(R.id.user_name).text = it
             }
