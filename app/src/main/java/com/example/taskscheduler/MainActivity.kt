@@ -25,10 +25,10 @@ class MainActivity : AppCompatActivity() {
     lateinit var mGoogleSignInClient: GoogleSignInClient
     var firebaseAuth = FirebaseAuth.getInstance()
 
-//check if already signed in
+    //check if already signed in
     override fun onStart() {
         super.onStart()
-        if(GoogleSignIn.getLastSignedInAccount(this)!=null){
+        if (GoogleSignIn.getLastSignedInAccount(this) != null) {
             val email = firebaseAuth.currentUser?.email.toString()
             navigate(email)
         }
