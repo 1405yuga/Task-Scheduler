@@ -1,6 +1,7 @@
 package com.example.taskscheduler
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
@@ -61,12 +62,20 @@ class DisplayTasks : AppCompatActivity() {
                     createAlertDialog()
                     true
                 }
+                R.id.doc ->{
+                    openUrl("https://github.com/1405yuga/Task-Scheduler/blob/main/README.md")
+                    true
+                }
 
                 else -> false
             }
 
         }
 
+    }
+
+    private fun openUrl(url: String) {
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
     }
 
     private fun setData() {
