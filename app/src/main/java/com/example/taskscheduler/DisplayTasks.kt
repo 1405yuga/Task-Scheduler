@@ -62,7 +62,13 @@ class DisplayTasks : AppCompatActivity() {
                     createAlertDialog()
                     true
                 }
-                R.id.doc ->{
+
+                R.id.about -> {
+                    openUrl("https://github.com/1405yuga/Task-Scheduler")
+                    true
+                }
+
+                R.id.doc -> {
                     openUrl("https://github.com/1405yuga/Task-Scheduler/blob/main/README.md")
                     true
                 }
