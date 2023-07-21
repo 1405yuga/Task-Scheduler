@@ -5,11 +5,16 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.example.taskscheduler.databinding.ActivityDisplayTasksBinding
+import com.example.taskscheduler.model.TaskViewModel
+import com.example.taskscheduler.model.TaskViewModelFactory
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 
 private const val TAG = "DisplayTasks tag"
 
@@ -17,6 +22,8 @@ class DisplayTasks : AppCompatActivity() {
 
     private lateinit var binding: ActivityDisplayTasksBinding
     private lateinit var mGoogleSignInClient: GoogleSignInClient
+    private lateinit var firebaseUser: FirebaseUser
+    private lateinit var viewModel: TaskViewModel
 
     override fun onStart() {
         super.onStart()
@@ -31,6 +38,14 @@ class DisplayTasks : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityDisplayTasksBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        firebaseUser = FirebaseAuth.getInstance().currentUser!!
+
+        //create viewmodel instance
+        viewModel = ViewModelProvider(this, TaskViewModelFactory()).get(TaskViewModel::class.java)
+        viewModel.setUserData(firebaseUser.email, firebaseUser.displayName,firebaseUser.photoUrl)
+
+        Log.d(TAG,"user details : ${viewModel.userEmail.value} ${viewModel.userDisplayName.value} ${viewModel.userPhotoUrl.value} ")
 
         binding.topAppBar.setNavigationOnClickListener {
             binding.drawerLayout.open()
@@ -57,10 +72,6 @@ class DisplayTasks : AppCompatActivity() {
             }
 
         }
-
-        val gmail: String? = intent.getStringExtra("gmail")
-        Log.d(TAG, "GMAIL : " + gmail)
-
 
     }
 

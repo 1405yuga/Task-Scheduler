@@ -1,5 +1,6 @@
 package com.example.taskscheduler.model
 
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,13 +13,13 @@ class TaskViewModel : ViewModel() {
 
     private var _userEmail = MutableLiveData<String>()
     private var _userDisplayName = MutableLiveData<String>()
-    private var _userPhotoUrl = MutableLiveData<String>()
+    private var _userPhotoUrl = MutableLiveData<Uri>()
 
     val userEmail: LiveData<String> = _userEmail
     val userDisplayName: LiveData<String> = _userDisplayName
-    val userPhotoUrl: LiveData<String> = _userPhotoUrl
+    val userPhotoUrl: LiveData<Uri> = _userPhotoUrl
 
-    fun setUserData(email: String, displayName: String, photoUrl: String) {
+    fun setUserData(email: String?, displayName: String?, photoUrl: Uri?) {
         this._userEmail.value = email
         this._userDisplayName.value = displayName
         this._userPhotoUrl.value = photoUrl
