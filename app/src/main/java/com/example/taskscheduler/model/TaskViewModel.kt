@@ -22,7 +22,7 @@ class TaskViewModel : ViewModel() {
         this._userEmail.value = email
         this._userDisplayName.value = displayName
         this._userPhotoUrl.value = photoUrl
-        Log.d(TAG,"Data $userEmail , $userDisplayName , $userPhotoUrl")
+        Log.d(TAG,"Data ${userEmail.value} , ${userDisplayName.value} , ${userPhotoUrl.value}")
     }
 
     private val _tasksList = MutableLiveData<List<Task>>()
