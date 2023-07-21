@@ -7,7 +7,10 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.example.taskscheduler.databinding.ActivityMainBinding
+import com.example.taskscheduler.model.TaskViewModel
+import com.example.taskscheduler.model.TaskViewModelFactory
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -25,6 +28,8 @@ class MainActivity : AppCompatActivity() {
     lateinit var mGoogleSignInClient: GoogleSignInClient
     var firebaseAuth = FirebaseAuth.getInstance()
 
+    private lateinit var viewModel: TaskViewModel
+
     //check if already signed in
     override fun onStart() {
         super.onStart()
@@ -38,6 +43,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        //create viewmodel instance
+        viewModel = ViewModelProvider(this,TaskViewModelFactory()).get(TaskViewModel::class.java)
 
         // Configure Google Sign In options
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
