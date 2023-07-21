@@ -6,7 +6,6 @@ import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import coil.load
@@ -17,7 +16,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.play.integrity.internal.ac
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
@@ -38,7 +36,10 @@ class DisplayTasks : AppCompatActivity() {
             .build()
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
 
-        Log.d(TAG,"user details : ${viewModel.userEmail.value} ${viewModel.userDisplayName.value} ${viewModel.userPhotoUrl.value} ")
+        Log.d(
+            TAG,
+            "user details : ${viewModel.userEmail.value} ${viewModel.userDisplayName.value} ${viewModel.userPhotoUrl.value} "
+        )
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,22 +55,13 @@ class DisplayTasks : AppCompatActivity() {
             Log.d(TAG, "navigation clicked")
         }
 
-        binding.topAppBar.setOnMenuItemClickListener { menuItem ->
+        binding.navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.signOut -> {
                     createAlertDialog()
                     true
                 }
-                else -> false
-            }
 
-        }
-        binding.navigationView.setNavigationItemSelectedListener {menuItem->
-            when (menuItem.itemId) {
-                R.id.signOut -> {
-                    createAlertDialog()
-                    true
-                }
                 else -> false
             }
 
@@ -81,14 +73,14 @@ class DisplayTasks : AppCompatActivity() {
         firebaseUser = FirebaseAuth.getInstance().currentUser!!
         //create viewmodel instance
         viewModel = ViewModelProvider(this, TaskViewModelFactory()).get(TaskViewModel::class.java)
-        viewModel.setUserData(firebaseUser.email, firebaseUser.displayName,firebaseUser.photoUrl)
+        viewModel.setUserData(firebaseUser.email, firebaseUser.displayName, firebaseUser.photoUrl)
     }
 
     private fun headerBinding() {
         val header = binding.navigationView.getHeaderView(0)
         header.apply {
-            viewModel.userPhotoUrl.observe(this@DisplayTasks){
-                findViewById<ImageView>(R.id.user_image).load(it){
+            viewModel.userPhotoUrl.observe(this@DisplayTasks) {
+                findViewById<ImageView>(R.id.user_image).load(it) {
                     placeholder(R.drawable.loading_animation)
                     error(R.drawable.account_outline)
                 }
