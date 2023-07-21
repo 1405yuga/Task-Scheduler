@@ -3,7 +3,9 @@ package com.example.taskscheduler
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.taskscheduler.databinding.ActivityDisplayTasksBinding
@@ -13,6 +15,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.play.integrity.internal.ac
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
@@ -32,6 +35,8 @@ class DisplayTasks : AppCompatActivity() {
             .requestEmail()
             .build()
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
+
+        Log.d(TAG,"user details : ${viewModel.userEmail.value} ${viewModel.userDisplayName.value} ${viewModel.userPhotoUrl.value} ")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,14 +44,8 @@ class DisplayTasks : AppCompatActivity() {
         binding = ActivityDisplayTasksBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        firebaseUser = FirebaseAuth.getInstance().currentUser!!
-
-        //create viewmodel instance
-        viewModel = ViewModelProvider(this, TaskViewModelFactory()).get(TaskViewModel::class.java)
-        viewModel.setUserData(firebaseUser.email, firebaseUser.displayName,firebaseUser.photoUrl)
-
-        Log.d(TAG,"user details : ${viewModel.userEmail.value} ${viewModel.userDisplayName.value} ${viewModel.userPhotoUrl.value} ")
-
+        setData()
+        headerbinding()
         binding.topAppBar.setNavigationOnClickListener {
             binding.drawerLayout.open()
             Log.d(TAG, "navigation clicked")
@@ -73,6 +72,25 @@ class DisplayTasks : AppCompatActivity() {
 
         }
 
+    }
+
+    private fun setData() {
+        firebaseUser = FirebaseAuth.getInstance().currentUser!!
+        //create viewmodel instance
+        viewModel = ViewModelProvider(this, TaskViewModelFactory()).get(TaskViewModel::class.java)
+        viewModel.setUserData(firebaseUser.email, firebaseUser.displayName,firebaseUser.photoUrl)
+    }
+
+    private fun headerbinding() {
+        val header = binding.navigationView.getHeaderView(0)
+        header.apply {
+            viewModel.userDisplayName.observe(this@DisplayTasks) {
+                findViewById<TextView>(R.id.user_name).text = it
+            }
+            viewModel.userEmail.observe(this@DisplayTasks) {
+                findViewById<TextView>(R.id.user_gmail).text = it
+            }
+        }
     }
 
     private fun createAlertDialog() {
