@@ -121,7 +121,7 @@ class DisplayTasks : AppCompatActivity() {
                 createDatePicker()
             }
             time.setOnClickListener {
-                // TODO: add time picker
+                //  add time picker
                 createTimePicker()
             }
 
@@ -140,11 +140,12 @@ class DisplayTasks : AppCompatActivity() {
 
         // create time picker BUTTONS
         timePicker.addOnPositiveButtonClickListener {
+            Log.d(TAG, "TIME SELECTED ${timePicker.hour} : ${timePicker.minute}")
             // TODO: get time and assign to variable 
         }
         timePicker.addOnDismissListener {
             // TODO: assign default time to variable 
-            
+
         }
     }
 
@@ -163,7 +164,6 @@ class DisplayTasks : AppCompatActivity() {
                 .setSelection(today)
                 .setCalendarConstraints(constraintsBuilder.build())
                 .build()
-        Log.d(TAG, "today : $today")
         datePicker.show(supportFragmentManager, "DATE PICK")
 
         // create date picker BUTTONS
