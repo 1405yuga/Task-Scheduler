@@ -2,13 +2,11 @@ package com.example.taskscheduler
 
 import android.app.Dialog
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.WindowManager
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -95,8 +93,14 @@ class DisplayTasks : AppCompatActivity() {
         val dialog = Dialog(this)
         val cardBinding = CardAddTaskBinding.inflate(layoutInflater)
         dialog.setContentView(cardBinding.root)
-        dialog.window?.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        val layoutParams = WindowManager.LayoutParams()
+        layoutParams.copyFrom(dialog.window?.attributes)
+        layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT
+        layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT
+        layoutParams.horizontalMargin = 0.1f / 6
+
+        dialog.window?.attributes = layoutParams
         dialog.show()
     }
 
