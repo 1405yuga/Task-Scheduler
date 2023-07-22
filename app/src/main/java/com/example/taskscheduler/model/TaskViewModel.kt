@@ -64,6 +64,13 @@ class TaskViewModel : ViewModel() {
         return now!!.format(formatter)
     }
 
+    fun addTask(name: String, details: String, date: String, time: String) {
+        this._taskName.value = name
+        this._taskDetails.value = details
+        this._taskDate.value = date
+        this._taskTime.value = time
+    }
+
 
     private val _tasksList = MutableLiveData<List<Task>>()
     val tasksList: LiveData<List<Task>> = _tasksList
