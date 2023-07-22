@@ -27,9 +27,6 @@ import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 private const val TAG = "DisplayTasks tag"
 
@@ -95,6 +92,7 @@ class DisplayTasks : AppCompatActivity() {
 
         binding.addBtn.setOnClickListener { openAddDialog() }
 
+
     }
 
     private fun openAddDialog() {
@@ -125,7 +123,13 @@ class DisplayTasks : AppCompatActivity() {
                 //  add time picker
                 createTimePicker()
             }
+            addButton.setOnClickListener {
+                // TODO: set task
+            }
 
+        }
+        viewModel.taskDate.observe(this@DisplayTasks) {
+            cardBinding.dateTextView.text = it
         }
     }
 
@@ -170,12 +174,11 @@ class DisplayTasks : AppCompatActivity() {
         // create date picker BUTTONS
         datePicker.addOnPositiveButtonClickListener {
             val formattedDate = viewModel.getFormattedDate(it)
-            // TODO: assign date to variable 
-            Log.d(TAG, "onPositive clicked $formattedDate")
+            viewModel.setDate(formattedDate)
         }
         datePicker.addOnDismissListener {
-            // TODO: assign today's date to variable 
-            Log.d(TAG, "onDismiss clicked ")
+            //  assign today's date to variable
+            viewModel.setDate(viewModel.getFormattedDate(today))
         }
     }
 
