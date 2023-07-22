@@ -39,6 +39,7 @@
                 android:inputType="textMultiLine" />
 
         </com.google.android.material.textfield.TextInputLayout>
+
         <LinearLayout
             android:id="@+id/date"
             android:layout_width="match_parent"
@@ -56,8 +57,28 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/calendar_edit_outline"
-                android:contentDescription="@string/enter_date" />
+                android:contentDescription="@string/enter_date"
+                android:src="@drawable/calendar_edit_outline" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/time"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="4dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/_0_0_pm" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/timer_edit_outline" />
         </LinearLayout>
 
 
