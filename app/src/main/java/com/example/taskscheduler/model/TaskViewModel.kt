@@ -66,7 +66,7 @@ class TaskViewModel : ViewModel() {
         return now!!.format(formatter)
     }
 
-    fun addTask(name: String, details: String, date: String, time: String) {
+    fun setTask(name: String, details: String, date: String, time: String) {
         this._taskName.value = name
         this._taskDetails.value = details
         this._taskDate.value = date

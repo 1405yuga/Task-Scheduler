@@ -135,7 +135,7 @@ class DisplayTasks : AppCompatActivity() {
                     taskDetails.error = "Task Details should be of length (1- 5000)"
                 } else {
                     //   add task
-                    viewModel.addTask(
+                    viewModel.setTask(
                         task.editText?.text.toString(), taskDetails.editText?.text.toString(),
                         viewModel.taskDate.value.toString(), viewModel.taskTime.value.toString()
                     )
