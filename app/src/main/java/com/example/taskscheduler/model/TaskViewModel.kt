@@ -61,17 +61,17 @@ class TaskViewModel : ViewModel() {
         this._taskTime.value = time
     }
 
+    fun setTask(name: String, details: String) {
+        this._taskName.value = name
+        this._taskDetails.value = details
+    }
+
     fun getFormattedTime(now: LocalTime?): String {
         val formatter = DateTimeFormatter.ofPattern("hh:mm a", Locale.getDefault())
         return now!!.format(formatter)
     }
 
-    fun setTask(name: String, details: String, date: String, time: String) {
-        this._taskName.value = name
-        this._taskDetails.value = details
-        this._taskDate.value = date
-        this._taskTime.value = time
-    }
+
 
     fun convertDateTimeToTimestamp(date: String,time:String): Timestamp {
         val dateTimeString = "$date $time"

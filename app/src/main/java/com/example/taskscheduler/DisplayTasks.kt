@@ -14,6 +14,8 @@ import androidx.lifecycle.ViewModelProvider
 import coil.load
 import com.example.taskscheduler.databinding.ActivityDisplayTasksBinding
 import com.example.taskscheduler.databinding.CardAddTaskBinding
+import com.example.taskscheduler.firebase.FirestoreFunctions.addTask
+import com.example.taskscheduler.model.Task
 import com.example.taskscheduler.model.TaskViewModel
 import com.example.taskscheduler.model.TaskViewModelFactory
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -28,10 +30,6 @@ import com.google.android.material.timepicker.TimeFormat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import java.time.LocalTime
-import com.google.firebase.Timestamp
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 private const val TAG = "DisplayTasks tag"
 
@@ -50,7 +48,10 @@ class DisplayTasks : AppCompatActivity() {
             .build()
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
 
-        Log.d(TAG, "user details : ${viewModel.userEmail.value} ${viewModel.userDisplayName.value} ${viewModel.userPhotoUrl.value} ")
+        Log.d(
+            TAG,
+            "user details : ${viewModel.userEmail.value} ${viewModel.userDisplayName.value} ${viewModel.userPhotoUrl.value} "
+        )
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -95,7 +96,6 @@ class DisplayTasks : AppCompatActivity() {
         binding.addBtn.setOnClickListener { openAddDialog() }
 
 
-
     }
 
     private fun openAddDialog() {
@@ -112,10 +112,10 @@ class DisplayTasks : AppCompatActivity() {
         dialog.window?.attributes = layoutParams
         dialog.show()
 
-        addDialogBinding(cardBinding,dialog)
+        addDialogBinding(cardBinding, dialog)
     }
 
-    private fun addDialogBinding(cardBinding: CardAddTaskBinding,dialog: Dialog) {
+    private fun addDialogBinding(cardBinding: CardAddTaskBinding, dialog: Dialog) {
         cardBinding.apply {
 
             date.setOnClickListener {
@@ -128,17 +128,15 @@ class DisplayTasks : AppCompatActivity() {
             }
             addButton.setOnClickListener {
                 if (task.editText?.text.toString().trim()
-                        .isEmpty() || task.editText?.text.toString().length > 40) {
+                        .isEmpty() || task.editText?.text.toString().length > 40
+                ) {
                     task.error = "Task name should be of length (1 - 40)"
                 } else if (taskDetails.editText?.text.toString().trim()
-                        .isEmpty() || taskDetails.editText?.text.toString().length > 40) {
+                        .isEmpty() || taskDetails.editText?.text.toString().length > 40
+                ) {
                     taskDetails.error = "Task Details should be of length (1- 5000)"
                 } else {
-                    //   add task
-                    viewModel.setTask(
-                        task.editText?.text.toString(), taskDetails.editText?.text.toString(),
-                        viewModel.taskDate.value.toString(), viewModel.taskTime.value.toString()
-                    )
+                    viewModel.setTask(task.editText?.text.toString(), taskDetails.editText?.text.toString())
                     dialog.dismiss()
                 }
             }
