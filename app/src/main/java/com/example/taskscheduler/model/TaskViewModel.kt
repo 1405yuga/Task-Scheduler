@@ -5,6 +5,8 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.taskscheduler.constants.ProjectConstants.TASK_DEFAULT
+import com.example.taskscheduler.constants.ProjectConstants.USER_DEFAULT
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.firebase.Timestamp
 import java.text.SimpleDateFormat
@@ -19,8 +21,8 @@ private val today = MaterialDatePicker.todayInUtcMilliseconds()
 class TaskViewModel : ViewModel() {
 
 
-    private var _userEmail = MutableLiveData<String>()
-    private var _userDisplayName = MutableLiveData<String>()
+    private var _userEmail = MutableLiveData(USER_DEFAULT)
+    private var _userDisplayName = MutableLiveData(USER_DEFAULT)
     private var _userPhotoUrl = MutableLiveData<Uri>()
 
     val userEmail: LiveData<String> = _userEmail
@@ -41,7 +43,6 @@ class TaskViewModel : ViewModel() {
         return formattedDate
     }
 
-    private val TASK_DEFAULT = "UNKNOWN TASK"
     private var _taskName = MutableLiveData(TASK_DEFAULT)
     private var _taskDetails = MutableLiveData(TASK_DEFAULT)
     private var _taskDate = MutableLiveData(getFormattedDate(today))
