@@ -1,16 +1,21 @@
 package com.example.taskscheduler
 
+import android.app.Dialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import coil.load
 import com.example.taskscheduler.databinding.ActivityDisplayTasksBinding
+import com.example.taskscheduler.databinding.CardAddTaskBinding
 import com.example.taskscheduler.model.TaskViewModel
 import com.example.taskscheduler.model.TaskViewModelFactory
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -58,7 +63,7 @@ class DisplayTasks : AppCompatActivity() {
         binding.navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.signOut -> {
-                    createAlertDialog()
+                    openAlertDialog()
                     true
                 }
 
@@ -82,6 +87,17 @@ class DisplayTasks : AppCompatActivity() {
 
         }
 
+        binding.addBtn.setOnClickListener { openAddDialog() }
+
+    }
+
+    private fun openAddDialog() {
+        val dialog = Dialog(this)
+        val cardBinding = CardAddTaskBinding.inflate(layoutInflater)
+        dialog.setContentView(cardBinding.root)
+        dialog.window?.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.show()
     }
 
     private fun openUrl(url: String) {
@@ -113,7 +129,7 @@ class DisplayTasks : AppCompatActivity() {
         }
     }
 
-    private fun createAlertDialog() {
+    private fun openAlertDialog() {
         MaterialAlertDialogBuilder(this)
             .setTitle(resources.getString(R.string.signout))
             .setMessage("Are you sure you want to sign Out?")
