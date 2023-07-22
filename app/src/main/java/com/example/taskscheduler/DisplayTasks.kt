@@ -137,6 +137,12 @@ class DisplayTasks : AppCompatActivity() {
                     taskDetails.error = "Task Details should be of length (1- 5000)"
                 } else {
                     viewModel.setTask(task.editText?.text.toString(), taskDetails.editText?.text.toString())
+                    val timestamp = viewModel.convertDateTimeToTimestamp(
+                        viewModel.taskDate.value.toString(),
+                        viewModel.taskTime.value.toString()
+                    )
+                    val task = Task(viewModel.taskName.value!!, viewModel.taskDetails.value!!, timestamp)
+                    addTask(viewModel.userEmail.value.toString(), task, applicationContext)
                     dialog.dismiss()
                 }
             }
