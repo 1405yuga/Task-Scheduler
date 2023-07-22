@@ -19,6 +19,8 @@ import com.example.taskscheduler.model.TaskViewModelFactory
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
@@ -121,12 +123,20 @@ class DisplayTasks : AppCompatActivity() {
     }
 
     private fun createDatePicker() {
+        val today = MaterialDatePicker.todayInUtcMilliseconds()
+
+        // date picker constraints
+        val constraintsBuilder = CalendarConstraints.Builder()
+            .setStart(today)
+            .setOpenAt(today)
+            .setValidator(DateValidatorPointForward.from(today))
+
         val datePicker =
             MaterialDatePicker.Builder.datePicker()
                 .setTitleText("Select date")
-                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                .setSelection(today)
                 .build()
-
+        Log.d(TAG,"today : $today")
         datePicker.show(supportFragmentManager,"tag")
     }
 
