@@ -23,8 +23,19 @@ class TaskViewModel : ViewModel() {
         this._userEmail.value = email
         this._userDisplayName.value = displayName
         this._userPhotoUrl.value = photoUrl
-        Log.d(TAG,"Data ${userEmail.value} , ${userDisplayName.value} , ${userPhotoUrl.value}")
+        Log.d(TAG, "Data ${userEmail.value} , ${userDisplayName.value} , ${userPhotoUrl.value}")
     }
+
+    private val TASK_DEFAULT ="UNKNOWN TASK"
+    private var _taskName = MutableLiveData(TASK_DEFAULT)
+    private var _taskDetails = MutableLiveData(TASK_DEFAULT)
+    private var _taskDate = MutableLiveData<String>()
+    private var _taskTime = MutableLiveData<String>()
+
+    val taskName: LiveData<String> = _taskName
+    val taskDetails: LiveData<String> = _taskDetails
+    val taskDate: LiveData<String> = _taskDate
+    val taskTime: LiveData<String> = _taskTime
 
     private val _tasksList = MutableLiveData<List<Task>>()
     val tasksList: LiveData<List<Task>> = _tasksList

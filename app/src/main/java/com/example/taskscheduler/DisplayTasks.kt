@@ -116,6 +116,7 @@ class DisplayTasks : AppCompatActivity() {
 
     private fun addDialogBinding(cardBinding: CardAddTaskBinding) {
         cardBinding.apply {
+
             date.setOnClickListener {
                 //  add date picker
                 createDatePicker()
