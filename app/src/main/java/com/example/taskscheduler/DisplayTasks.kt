@@ -23,6 +23,8 @@ import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import java.text.SimpleDateFormat
@@ -115,14 +117,28 @@ class DisplayTasks : AppCompatActivity() {
     private fun addDialogBinding(cardBinding: CardAddTaskBinding) {
         cardBinding.apply {
             date.setOnClickListener {
-                // TODO: add date picker
+                //  add date picker
                 createDatePicker()
             }
             time.setOnClickListener {
                 // TODO: add time picker
+                createTimePicker()
             }
 
         }
+    }
+
+    private fun createTimePicker() {
+        val timePicker = MaterialTimePicker.Builder()
+            .setTimeFormat(TimeFormat.CLOCK_12H)
+            .setHour(12)
+            .setMinute(10)
+            .setTitleText("Select Task time")
+            .build()
+
+        timePicker.show(supportFragmentManager, "TIME PICK")
+
+
     }
 
     private fun createDatePicker() {
@@ -136,24 +152,24 @@ class DisplayTasks : AppCompatActivity() {
 
         val datePicker =
             MaterialDatePicker.Builder.datePicker()
-                .setTitleText("Select date")
+                .setTitleText("Select Task date")
                 .setSelection(today)
                 .setCalendarConstraints(constraintsBuilder.build())
                 .build()
         Log.d(TAG, "today : $today")
         datePicker.show(supportFragmentManager, "DATE PICK")
 
-        // create date picker menu options
+        // create date picker BUTTONS
         datePicker.addOnPositiveButtonClickListener {
             val selectedDate = Date(it)
             val format = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
             val formattedDate = format.format(selectedDate)
             // TODO: assign date to variable 
-            Log.d(TAG,"onPositive clicked $formattedDate")
+            Log.d(TAG, "onPositive clicked $formattedDate")
         }
         datePicker.addOnDismissListener {
             // TODO: assign today's date to variable 
-            Log.d(TAG,"onDismiss clicked ")
+            Log.d(TAG, "onDismiss clicked ")
         }
     }
 
