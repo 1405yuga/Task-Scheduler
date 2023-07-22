@@ -138,7 +138,14 @@ class DisplayTasks : AppCompatActivity() {
 
         timePicker.show(supportFragmentManager, "TIME PICK")
 
-
+        // create time picker BUTTONS
+        timePicker.addOnPositiveButtonClickListener {
+            // TODO: get time and assign to variable 
+        }
+        timePicker.addOnDismissListener {
+            // TODO: assign default time to variable 
+            
+        }
     }
 
     private fun createDatePicker() {
