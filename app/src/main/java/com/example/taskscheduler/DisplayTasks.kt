@@ -132,6 +132,9 @@ class DisplayTasks : AppCompatActivity() {
         viewModel.taskDate.observe(this@DisplayTasks) {
             cardBinding.dateTextView.text = it
         }
+        viewModel.taskTime.observe(this@DisplayTasks){
+            cardBinding.timeTextView.text = it
+        }
     }
 
     private fun createTimePicker() {
@@ -148,11 +151,6 @@ class DisplayTasks : AppCompatActivity() {
         timePicker.addOnPositiveButtonClickListener {
             val time = viewModel.getFormattedTime(LocalTime.of(timePicker.hour, timePicker.minute))
             viewModel.setTime(time)
-        }
-        timePicker.addOnDismissListener {
-            val time = viewModel.getFormattedTime(LocalTime.now())
-            viewModel.setTime(time)
-
         }
     }
 

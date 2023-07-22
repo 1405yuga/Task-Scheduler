@@ -44,7 +44,7 @@ class TaskViewModel : ViewModel() {
     private var _taskName = MutableLiveData(TASK_DEFAULT)
     private var _taskDetails = MutableLiveData(TASK_DEFAULT)
     private var _taskDate = MutableLiveData(getFormattedDate(today))
-    private var _taskTime = MutableLiveData(getFormattedTime(LocalTime.now()))
+    private var _taskTime = MutableLiveData(getFormattedTime(LocalTime.of(12,10)))
 
     val taskName: LiveData<String> = _taskName
     val taskDetails: LiveData<String> = _taskDetails
@@ -56,7 +56,7 @@ class TaskViewModel : ViewModel() {
     }
 
     fun setTime(time: String) {
-        this._taskDate.value = time
+        this._taskTime.value = time
     }
 
     fun getFormattedTime(now: LocalTime?): String {
