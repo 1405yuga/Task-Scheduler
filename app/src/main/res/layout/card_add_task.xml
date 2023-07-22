@@ -2,25 +2,38 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="6dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="6dp">
+        android:padding="8dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/new_task"
+            android:textSize="22sp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="6dp"
+            android:textStyle="bold"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/task"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="2dp"
-            android:hint="@string/what_would_you_like_to_do">
+            android:hint="@string/what_would_you_like_to_do"
+            app:endIconMode="clear_text"
+            app:endIconDrawable="@drawable/close_box">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:maxLength="40"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -31,12 +44,15 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:layout_marginBottom="2dp"
-            android:hint="@string/details">
+            android:hint="@string/details"
+            app:endIconMode="clear_text"
+            app:endIconDrawable="@drawable/close_box">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textMultiLine" />
+                android:inputType="textMultiLine"
+                android:maxLength="4000"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -83,10 +99,10 @@
 
         <Button
             android:id="@+id/addButton"
-            style="?attr/materialButtonOutlinedStyle"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add" />
+            android:text="@string/add"
+            android:layout_gravity="end"/>
 
     </LinearLayout>
 
