@@ -72,7 +72,8 @@ class TaskViewModel : ViewModel() {
         this._taskTime.value = time
     }
 
-    fun convertDateTimeToTimestamp(dateTimeString: String): Timestamp {
+    fun convertDateTimeToTimestamp(date: String,time:String): Timestamp {
+        val dateTimeString = "$date $time"
         val format = SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault())
         val date = format.parse(dateTimeString)
         return Timestamp(date!!)

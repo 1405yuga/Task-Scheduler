@@ -28,6 +28,10 @@ import com.google.android.material.timepicker.TimeFormat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import java.time.LocalTime
+import com.google.firebase.Timestamp
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 private const val TAG = "DisplayTasks tag"
 
@@ -46,10 +50,7 @@ class DisplayTasks : AppCompatActivity() {
             .build()
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
 
-        Log.d(
-            TAG,
-            "user details : ${viewModel.userEmail.value} ${viewModel.userDisplayName.value} ${viewModel.userPhotoUrl.value} "
-        )
+        Log.d(TAG, "user details : ${viewModel.userEmail.value} ${viewModel.userDisplayName.value} ${viewModel.userPhotoUrl.value} ")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -94,6 +95,7 @@ class DisplayTasks : AppCompatActivity() {
         binding.addBtn.setOnClickListener { openAddDialog() }
 
 
+
     }
 
     private fun openAddDialog() {
@@ -125,14 +127,11 @@ class DisplayTasks : AppCompatActivity() {
                 createTimePicker()
             }
             addButton.setOnClickListener {
-
                 if (task.editText?.text.toString().trim()
-                        .isEmpty() || task.editText?.text.toString().length > 40
-                ) {
+                        .isEmpty() || task.editText?.text.toString().length > 40) {
                     task.error = "Task name should be of length (1 - 40)"
                 } else if (taskDetails.editText?.text.toString().trim()
-                        .isEmpty() || taskDetails.editText?.text.toString().length > 40
-                ) {
+                        .isEmpty() || taskDetails.editText?.text.toString().length > 40) {
                     taskDetails.error = "Task Details should be of length (1- 5000)"
                 } else {
                     //   add task
@@ -140,7 +139,7 @@ class DisplayTasks : AppCompatActivity() {
                         task.editText?.text.toString(), taskDetails.editText?.text.toString(),
                         viewModel.taskDate.value.toString(), viewModel.taskTime.value.toString()
                     )
-                    // TODO: add task to firestore
+
                 }
             }
 
@@ -169,6 +168,10 @@ class DisplayTasks : AppCompatActivity() {
             val time = viewModel.getFormattedTime(LocalTime.of(timePicker.hour, timePicker.minute))
             viewModel.setTime(time)
         }
+        timePicker.addOnNegativeButtonClickListener {
+            val time = viewModel.getFormattedTime(LocalTime.now())
+            viewModel.setTime(time)
+        }
     }
 
     private fun createDatePicker() {
@@ -193,9 +196,9 @@ class DisplayTasks : AppCompatActivity() {
             val formattedDate = viewModel.getFormattedDate(it)
             viewModel.setDate(formattedDate)
         }
-        datePicker.addOnDismissListener {
-            //  assign today's date to variable
-            viewModel.setDate(viewModel.getFormattedDate(today))
+        datePicker.addOnNegativeButtonClickListener {
+            val formattedDate = viewModel.getFormattedDate(today)
+            viewModel.setDate(formattedDate)
         }
     }
 
@@ -247,4 +250,6 @@ class DisplayTasks : AppCompatActivity() {
             }
             .show()
     }
+
+
 }
