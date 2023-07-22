@@ -7,6 +7,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.material.datepicker.MaterialDatePicker
 import java.text.SimpleDateFormat
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 import java.util.Date
 import java.util.Locale
 
@@ -36,14 +38,13 @@ class TaskViewModel : ViewModel() {
         val format = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         val formattedDate = format.format(selectedDate)
         return formattedDate
-
     }
 
     private val TASK_DEFAULT = "UNKNOWN TASK"
     private var _taskName = MutableLiveData(TASK_DEFAULT)
     private var _taskDetails = MutableLiveData(TASK_DEFAULT)
     private var _taskDate = MutableLiveData(getFormattedDate(today))
-    private var _taskTime = MutableLiveData<String>()
+    private var _taskTime = MutableLiveData(getFormattedTime(LocalTime.now()))
 
     val taskName: LiveData<String> = _taskName
     val taskDetails: LiveData<String> = _taskDetails
@@ -56,6 +57,11 @@ class TaskViewModel : ViewModel() {
 
     fun setTime(time: String) {
         this._taskDate.value = time
+    }
+
+    fun getFormattedTime(now: LocalTime?): String {
+        val formatter = DateTimeFormatter.ofPattern("hh:mm a", Locale.getDefault())
+        return now!!.format(formatter)
     }
 
     private val _tasksList = MutableLiveData<List<Task>>()
