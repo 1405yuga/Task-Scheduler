@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.firebase.Timestamp
 import java.text.SimpleDateFormat
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -69,6 +70,12 @@ class TaskViewModel : ViewModel() {
         this._taskDetails.value = details
         this._taskDate.value = date
         this._taskTime.value = time
+    }
+
+    fun convertDateTimeToTimestamp(dateTimeString: String): Timestamp {
+        val format = SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault())
+        val date = format.parse(dateTimeString)
+        return Timestamp(date!!)
     }
 
 
