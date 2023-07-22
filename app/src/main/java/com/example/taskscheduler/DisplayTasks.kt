@@ -19,6 +19,7 @@ import com.example.taskscheduler.model.TaskViewModelFactory
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -109,13 +110,24 @@ class DisplayTasks : AppCompatActivity() {
     private fun addDialogBinding(cardBinding: CardAddTaskBinding) {
         cardBinding.apply { 
             date.setOnClickListener {
-            // TODO: add date picker  
+            // TODO: add date picker
+                createDatePicker()
             }
             time.setOnClickListener {
-                // TODO: add time picker 
+                // TODO: add time picker
             }
                 
         }
+    }
+
+    private fun createDatePicker() {
+        val datePicker =
+            MaterialDatePicker.Builder.datePicker()
+                .setTitleText("Select date")
+                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                .build()
+
+        datePicker.show(supportFragmentManager,"tag")
     }
 
     private fun openUrl(url: String) {
