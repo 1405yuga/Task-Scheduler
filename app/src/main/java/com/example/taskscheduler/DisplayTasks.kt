@@ -112,10 +112,10 @@ class DisplayTasks : AppCompatActivity() {
         dialog.window?.attributes = layoutParams
         dialog.show()
 
-        addDialogBinding(cardBinding)
+        addDialogBinding(cardBinding,dialog)
     }
 
-    private fun addDialogBinding(cardBinding: CardAddTaskBinding) {
+    private fun addDialogBinding(cardBinding: CardAddTaskBinding,dialog: Dialog) {
         cardBinding.apply {
 
             date.setOnClickListener {
@@ -139,7 +139,7 @@ class DisplayTasks : AppCompatActivity() {
                         task.editText?.text.toString(), taskDetails.editText?.text.toString(),
                         viewModel.taskDate.value.toString(), viewModel.taskTime.value.toString()
                     )
-
+                    dialog.dismiss()
                 }
             }
 
