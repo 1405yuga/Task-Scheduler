@@ -78,6 +78,11 @@ class TaskViewModel : ViewModel() {
         return Timestamp(date!!)
     }
 
+    fun convertTimestampToDateTime(timestamp: Timestamp): String {
+        val date = timestamp.toDate()
+        val format = SimpleDateFormat("dd-MM-yyyy hh:mm a", Locale.getDefault())
+        return format.format(date)
+    }
 
     private val _tasksList = MutableLiveData<List<Task>>()
     val tasksList: LiveData<List<Task>> = _tasksList
