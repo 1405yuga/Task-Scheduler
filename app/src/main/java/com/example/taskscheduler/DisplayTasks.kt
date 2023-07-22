@@ -27,6 +27,7 @@ import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import java.time.LocalTime
 
 private const val TAG = "DisplayTasks tag"
 
@@ -145,11 +146,12 @@ class DisplayTasks : AppCompatActivity() {
 
         // create time picker BUTTONS
         timePicker.addOnPositiveButtonClickListener {
-            Log.d(TAG, "TIME SELECTED ${timePicker.hour} : ${timePicker.minute}")
-            // TODO: get time and assign to variable 
+            val time = viewModel.getFormattedTime(LocalTime.of(timePicker.hour, timePicker.minute))
+            viewModel.setTime(time)
         }
         timePicker.addOnDismissListener {
-            // TODO: assign default time to variable 
+            val time = viewModel.getFormattedTime(LocalTime.now())
+            viewModel.setTime(time)
 
         }
     }
