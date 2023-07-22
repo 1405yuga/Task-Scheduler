@@ -102,6 +102,20 @@ class DisplayTasks : AppCompatActivity() {
 
         dialog.window?.attributes = layoutParams
         dialog.show()
+        
+        addDialogBinding(cardBinding)
+    }
+
+    private fun addDialogBinding(cardBinding: CardAddTaskBinding) {
+        cardBinding.apply { 
+            date.setOnClickListener {
+            // TODO: add date picker  
+            }
+            time.setOnClickListener {
+                // TODO: add time picker 
+            }
+                
+        }
     }
 
     private fun openUrl(url: String) {
