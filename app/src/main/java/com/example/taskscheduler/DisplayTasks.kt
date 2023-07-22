@@ -169,9 +169,7 @@ class DisplayTasks : AppCompatActivity() {
 
         // create date picker BUTTONS
         datePicker.addOnPositiveButtonClickListener {
-            val selectedDate = Date(it)
-            val format = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-            val formattedDate = format.format(selectedDate)
+            val formattedDate = viewModel.getFormattedDate(it)
             // TODO: assign date to variable 
             Log.d(TAG, "onPositive clicked $formattedDate")
         }

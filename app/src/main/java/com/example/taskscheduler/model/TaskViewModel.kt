@@ -5,6 +5,9 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 private const val TAG = "TaskViewModel tag"
 
@@ -26,7 +29,15 @@ class TaskViewModel : ViewModel() {
         Log.d(TAG, "Data ${userEmail.value} , ${userDisplayName.value} , ${userPhotoUrl.value}")
     }
 
-    private val TASK_DEFAULT ="UNKNOWN TASK"
+    fun getFormattedDate(it: Long?): String {
+        val selectedDate = Date(it!!)
+        val format = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val formattedDate = format.format(selectedDate)
+        return formattedDate
+
+    }
+
+    private val TASK_DEFAULT = "UNKNOWN TASK"
     private var _taskName = MutableLiveData(TASK_DEFAULT)
     private var _taskDetails = MutableLiveData(TASK_DEFAULT)
     private var _taskDate = MutableLiveData<String>()
