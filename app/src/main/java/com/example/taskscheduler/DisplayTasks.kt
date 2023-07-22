@@ -125,7 +125,16 @@ class DisplayTasks : AppCompatActivity() {
                 createTimePicker()
             }
             addButton.setOnClickListener {
-                // TODO: set task
+
+                if(task.editText?.text.toString().trim().isEmpty() || task.editText?.text.toString().length>40){
+                    task.error = "Task name should be of length (1 - 40)"
+                }
+                else if(taskDetails.editText?.text.toString().trim().isEmpty() || taskDetails.editText?.text.toString().length>40){
+                    taskDetails.error = "Task Details should be of length (1- 5000)"
+                }
+                else{
+                    // TODO:  set task
+                }
             }
 
         }

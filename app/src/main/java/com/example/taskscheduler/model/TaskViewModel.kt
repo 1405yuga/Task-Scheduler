@@ -44,7 +44,7 @@ class TaskViewModel : ViewModel() {
     private var _taskName = MutableLiveData(TASK_DEFAULT)
     private var _taskDetails = MutableLiveData(TASK_DEFAULT)
     private var _taskDate = MutableLiveData(getFormattedDate(today))
-    private var _taskTime = MutableLiveData(getFormattedTime(LocalTime.of(12,10)))
+    private var _taskTime = MutableLiveData(getFormattedTime(LocalTime.of(12, 10)))
 
     val taskName: LiveData<String> = _taskName
     val taskDetails: LiveData<String> = _taskDetails
@@ -63,6 +63,7 @@ class TaskViewModel : ViewModel() {
         val formatter = DateTimeFormatter.ofPattern("hh:mm a", Locale.getDefault())
         return now!!.format(formatter)
     }
+
 
     private val _tasksList = MutableLiveData<List<Task>>()
     val tasksList: LiveData<List<Task>> = _tasksList
