@@ -25,6 +25,9 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 private const val TAG = "DisplayTasks tag"
 
@@ -105,20 +108,20 @@ class DisplayTasks : AppCompatActivity() {
 
         dialog.window?.attributes = layoutParams
         dialog.show()
-        
+
         addDialogBinding(cardBinding)
     }
 
     private fun addDialogBinding(cardBinding: CardAddTaskBinding) {
-        cardBinding.apply { 
+        cardBinding.apply {
             date.setOnClickListener {
-            // TODO: add date picker
+                // TODO: add date picker
                 createDatePicker()
             }
             time.setOnClickListener {
                 // TODO: add time picker
             }
-                
+
         }
     }
 
@@ -135,9 +138,23 @@ class DisplayTasks : AppCompatActivity() {
             MaterialDatePicker.Builder.datePicker()
                 .setTitleText("Select date")
                 .setSelection(today)
+                .setCalendarConstraints(constraintsBuilder.build())
                 .build()
-        Log.d(TAG,"today : $today")
-        datePicker.show(supportFragmentManager,"tag")
+        Log.d(TAG, "today : $today")
+        datePicker.show(supportFragmentManager, "DATE PICK")
+
+        // create date picker menu options
+        datePicker.addOnPositiveButtonClickListener {
+            val selectedDate = Date(it)
+            val format = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            val formattedDate = format.format(selectedDate)
+            // TODO: assign date to variable 
+            Log.d(TAG,"onPositive clicked $formattedDate")
+        }
+        datePicker.addOnDismissListener {
+            // TODO: assign today's date to variable 
+            Log.d(TAG,"onDismiss clicked ")
+        }
     }
 
     private fun openUrl(url: String) {
