@@ -5,11 +5,13 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.android.material.datepicker.MaterialDatePicker
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
 private const val TAG = "TaskViewModel tag"
+private val today = MaterialDatePicker.todayInUtcMilliseconds()
 
 class TaskViewModel : ViewModel() {
 
@@ -40,13 +42,17 @@ class TaskViewModel : ViewModel() {
     private val TASK_DEFAULT = "UNKNOWN TASK"
     private var _taskName = MutableLiveData(TASK_DEFAULT)
     private var _taskDetails = MutableLiveData(TASK_DEFAULT)
-    private var _taskDate = MutableLiveData<String>()
+    private var _taskDate = MutableLiveData(getFormattedDate(today))
     private var _taskTime = MutableLiveData<String>()
 
     val taskName: LiveData<String> = _taskName
     val taskDetails: LiveData<String> = _taskDetails
     val taskDate: LiveData<String> = _taskDate
     val taskTime: LiveData<String> = _taskTime
+
+    fun setDate(date: String) {
+        this._taskDate.value = date
+    }
 
     private val _tasksList = MutableLiveData<List<Task>>()
     val tasksList: LiveData<List<Task>> = _tasksList
