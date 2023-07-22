@@ -15,6 +15,7 @@ import coil.load
 import com.example.taskscheduler.databinding.ActivityDisplayTasksBinding
 import com.example.taskscheduler.databinding.CardAddTaskBinding
 import com.example.taskscheduler.firebase.FirestoreFunctions.addTask
+import com.example.taskscheduler.firebase.FirestoreFunctions.getTasks
 import com.example.taskscheduler.model.Task
 import com.example.taskscheduler.model.TaskViewModel
 import com.example.taskscheduler.model.TaskViewModelFactory
@@ -94,7 +95,7 @@ class DisplayTasks : AppCompatActivity() {
         }
 
         binding.addBtn.setOnClickListener { openAddDialog() }
-
+        getTasks(viewModel.userEmail.value.toString(),applicationContext)
 
     }
 
