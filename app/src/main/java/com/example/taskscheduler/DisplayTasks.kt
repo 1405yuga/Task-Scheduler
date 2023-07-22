@@ -126,14 +126,21 @@ class DisplayTasks : AppCompatActivity() {
             }
             addButton.setOnClickListener {
 
-                if(task.editText?.text.toString().trim().isEmpty() || task.editText?.text.toString().length>40){
+                if (task.editText?.text.toString().trim()
+                        .isEmpty() || task.editText?.text.toString().length > 40
+                ) {
                     task.error = "Task name should be of length (1 - 40)"
-                }
-                else if(taskDetails.editText?.text.toString().trim().isEmpty() || taskDetails.editText?.text.toString().length>40){
+                } else if (taskDetails.editText?.text.toString().trim()
+                        .isEmpty() || taskDetails.editText?.text.toString().length > 40
+                ) {
                     taskDetails.error = "Task Details should be of length (1- 5000)"
-                }
-                else{
-                    // TODO:  set task
+                } else {
+                    //   add task
+                    viewModel.addTask(
+                        task.editText?.text.toString(), taskDetails.editText?.text.toString(),
+                        viewModel.taskDate.value.toString(), viewModel.taskTime.value.toString()
+                    )
+                    // TODO: add task to firestore
                 }
             }
 
@@ -141,10 +148,11 @@ class DisplayTasks : AppCompatActivity() {
         viewModel.taskDate.observe(this@DisplayTasks) {
             cardBinding.dateTextView.text = it
         }
-        viewModel.taskTime.observe(this@DisplayTasks){
+        viewModel.taskTime.observe(this@DisplayTasks) {
             cardBinding.timeTextView.text = it
         }
     }
+
 
     private fun createTimePicker() {
         val timePicker = MaterialTimePicker.Builder()
