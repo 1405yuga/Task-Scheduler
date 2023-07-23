@@ -1,6 +1,7 @@
 package com.example.taskscheduler.adapters
 
 import android.content.Context
+import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.taskscheduler.constants.TimeConvertingFunctions.convertTimestampToDateTime
 import com.example.taskscheduler.databinding.ListItemTaskBinding
@@ -18,5 +19,18 @@ class TasksListAdapter(private val context : Context,private val tasksList : Lis
             }
         }
     }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
+        TODO("Not yet implemented")
+    }
+
+    override fun getItemCount(): Int {
+        return tasksList.size
+    }
+
+    override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
+        TODO("Not yet implemented")
+    }
+
 
 }
