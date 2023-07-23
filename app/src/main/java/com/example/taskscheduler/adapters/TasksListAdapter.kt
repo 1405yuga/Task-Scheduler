@@ -32,7 +32,8 @@ class TasksListAdapter(private val context : Context,private val tasksList : Lis
     }
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
-        TODO("Not yet implemented")
+        val task : Task = tasksList.get(position)
+        holder.bind(task)
     }
 
 
