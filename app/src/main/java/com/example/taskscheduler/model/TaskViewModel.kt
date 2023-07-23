@@ -7,13 +7,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.taskscheduler.constants.ProjectConstants.TASK_DEFAULT
 import com.example.taskscheduler.constants.ProjectConstants.USER_DEFAULT
+import com.example.taskscheduler.constants.TimeConvertingFunctions.getFormattedDate
+import com.example.taskscheduler.constants.TimeConvertingFunctions.getFormattedTime
 import com.google.android.material.datepicker.MaterialDatePicker
-import com.google.firebase.Timestamp
-import java.text.SimpleDateFormat
 import java.time.LocalTime
-import java.time.format.DateTimeFormatter
-import java.util.Date
-import java.util.Locale
 
 private const val TAG = "TaskViewModel tag"
 private val today = MaterialDatePicker.todayInUtcMilliseconds()
@@ -36,12 +33,6 @@ class TaskViewModel : ViewModel() {
         Log.d(TAG, "Data ${userEmail.value} , ${userDisplayName.value} , ${userPhotoUrl.value}")
     }
 
-    fun getFormattedDate(it: Long?): String {
-        val selectedDate = Date(it!!)
-        val format = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-        val formattedDate = format.format(selectedDate)
-        return formattedDate
-    }
 
     private var _taskName = MutableLiveData(TASK_DEFAULT)
     private var _taskDetails = MutableLiveData(TASK_DEFAULT)
@@ -66,25 +57,6 @@ class TaskViewModel : ViewModel() {
         this._taskDetails.value = details
     }
 
-    fun getFormattedTime(now: LocalTime?): String {
-        val formatter = DateTimeFormatter.ofPattern("hh:mm a", Locale.getDefault())
-        return now!!.format(formatter)
-    }
-
-
-
-    fun convertDateTimeToTimestamp(date: String,time:String): Timestamp {
-        val dateTimeString = "$date $time"
-        val format = SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault())
-        val date = format.parse(dateTimeString)
-        return Timestamp(date!!)
-    }
-
-    fun convertTimestampToDateTime(timestamp: Timestamp): String {
-        val date = timestamp.toDate()
-        val format = SimpleDateFormat("dd-MM-yyyy hh:mm a", Locale.getDefault())
-        return format.format(date)
-    }
 
     private val _tasksList = MutableLiveData<List<Task>>()
     val tasksList: LiveData<List<Task>> = _tasksList

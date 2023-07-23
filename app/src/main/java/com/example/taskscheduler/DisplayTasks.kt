@@ -12,6 +12,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import coil.load
+import com.example.taskscheduler.constants.TimeConvertingFunctions.convertDateTimeToTimestamp
+import com.example.taskscheduler.constants.TimeConvertingFunctions.getFormattedDate
+import com.example.taskscheduler.constants.TimeConvertingFunctions.getFormattedTime
 import com.example.taskscheduler.databinding.ActivityDisplayTasksBinding
 import com.example.taskscheduler.databinding.CardAddTaskBinding
 import com.example.taskscheduler.firebase.FirestoreFunctions.addTask
@@ -95,7 +98,7 @@ class DisplayTasks : AppCompatActivity() {
         }
 
         binding.addBtn.setOnClickListener { openAddDialog() }
-        getTasks(viewModel.userEmail.value.toString(),applicationContext)
+        getTasks(viewModel.userEmail.value.toString(), applicationContext)
 
     }
 
@@ -137,12 +140,16 @@ class DisplayTasks : AppCompatActivity() {
                 ) {
                     taskDetails.error = "Task Details should be of length (1- 5000)"
                 } else {
-                    viewModel.setTask(task.editText?.text.toString(), taskDetails.editText?.text.toString())
-                    val timestamp = viewModel.convertDateTimeToTimestamp(
+                    viewModel.setTask(
+                        task.editText?.text.toString(),
+                        taskDetails.editText?.text.toString()
+                    )
+                    val timestamp = convertDateTimeToTimestamp(
                         viewModel.taskDate.value.toString(),
                         viewModel.taskTime.value.toString()
                     )
-                    val task = Task(viewModel.taskName.value!!, viewModel.taskDetails.value!!, timestamp)
+                    val task =
+                        Task(viewModel.taskName.value!!, viewModel.taskDetails.value!!, timestamp)
                     addTask(viewModel.userEmail.value.toString(), task, applicationContext)
                     dialog.dismiss()
                 }
@@ -170,11 +177,11 @@ class DisplayTasks : AppCompatActivity() {
 
         // create time picker BUTTONS
         timePicker.addOnPositiveButtonClickListener {
-            val time = viewModel.getFormattedTime(LocalTime.of(timePicker.hour, timePicker.minute))
+            val time = getFormattedTime(LocalTime.of(timePicker.hour, timePicker.minute))
             viewModel.setTime(time)
         }
         timePicker.addOnNegativeButtonClickListener {
-            val time = viewModel.getFormattedTime(LocalTime.now())
+            val time = getFormattedTime(LocalTime.now())
             viewModel.setTime(time)
         }
     }
@@ -198,11 +205,11 @@ class DisplayTasks : AppCompatActivity() {
 
         // create date picker BUTTONS
         datePicker.addOnPositiveButtonClickListener {
-            val formattedDate = viewModel.getFormattedDate(it)
+            val formattedDate = getFormattedDate(it)
             viewModel.setDate(formattedDate)
         }
         datePicker.addOnNegativeButtonClickListener {
-            val formattedDate = viewModel.getFormattedDate(today)
+            val formattedDate = getFormattedDate(today)
             viewModel.setDate(formattedDate)
         }
     }
