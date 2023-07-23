@@ -9,15 +9,16 @@ import java.util.Locale
 
 object TimeConvertingFunctions {
 
-    fun convertTimestampToDateTime(timestamp: Timestamp): String {
-        val date = timestamp.toDate()
-        val format = SimpleDateFormat("dd-MM-yyyy hh:mm a", Locale.getDefault())
-        return format.format(date)
+    fun convertTimestampToDateTime(timestamp: Timestamp): Pair<String,String> {
+        val dateTime = timestamp.toDate()
+        val formatDate = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+        val formatTime = SimpleDateFormat("hh:mm a", Locale.getDefault())
+        return Pair(formatDate.format(dateTime),formatTime.format(dateTime))
     }
 
     fun convertDateTimeToTimestamp(date: String, time: String): Timestamp {
         val dateTimeString = "$date $time"
-        val format = SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault())
+        val format = SimpleDateFormat("dd-MM-yyyy hh:mm a", Locale.getDefault())
         val date = format.parse(dateTimeString)
         return Timestamp(date!!)
     }
@@ -30,7 +31,7 @@ object TimeConvertingFunctions {
 
     fun getFormattedDate(it: Long?): String {
         val selectedDate = Date(it!!)
-        val format = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val format = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
         val formattedDate = format.format(selectedDate)
         return formattedDate
     }

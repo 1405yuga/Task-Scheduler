@@ -8,22 +8,26 @@ import com.example.taskscheduler.constants.TimeConvertingFunctions.convertTimest
 import com.example.taskscheduler.databinding.ListItemTaskBinding
 import com.example.taskscheduler.model.Task
 
-class TasksListAdapter(private val context : Context,private val tasksList : List<Task>) : RecyclerView.Adapter<TasksListAdapter.TaskViewHolder>() {
+class TasksListAdapter(private val context: Context, private val tasksList: List<Task>) :
+    RecyclerView.Adapter<TasksListAdapter.TaskViewHolder>() {
 
     // holds the view
-    class TaskViewHolder(val binding : ListItemTaskBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(task : Task){
+    class TaskViewHolder(val binding: ListItemTaskBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(task: Task) {
             binding.apply {
                 taskName.text = task.taskName
                 details.text = task.taskDetails
-                dateTime.text = convertTimestampToDateTime(task.timestamp!!)
+                val (dateValue, timeValue) = convertTimestampToDateTime(task.timestamp!!)
+                date.text = dateValue
+                time.text = timeValue
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val binding : ListItemTaskBinding = ListItemTaskBinding.inflate(layoutInflater,parent,false)
+        val binding: ListItemTaskBinding =
+            ListItemTaskBinding.inflate(layoutInflater, parent, false)
         return TaskViewHolder(binding)
     }
 
@@ -32,7 +36,7 @@ class TasksListAdapter(private val context : Context,private val tasksList : Lis
     }
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
-        val task : Task = tasksList.get(position)
+        val task: Task = tasksList.get(position)
         holder.bind(task)
     }
 
