@@ -7,8 +7,8 @@
     android:layout_marginTop="2dp"
     android:layout_marginEnd="4dp"
     android:elevation="0dp"
-    app:cardCornerRadius="@dimen/prompt_vertical"
-    app:cardElevation="2dp"
+    app:cardCornerRadius="4dp"
+    app:cardElevation="4dp"
     app:cardUseCompatPadding="true">
 
     <LinearLayout
@@ -37,7 +37,56 @@
                 android:layout_weight="1"
                 android:text="@string/task"
                 android:textSize="26sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:layout_marginTop="4dp"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="4dp"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/calendar_month" />
+
+                    <TextView
+                        android:id="@+id/date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginEnd="2dp"
+                        android:text="@string/_11_10_2001" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="4dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginStart="3dp"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/clock_outline" />
+
+                    <TextView
+                        android:id="@+id/time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="2dp"
+                        android:text="@string/_0_0_pm" />
+                </LinearLayout>
+            </LinearLayout>
 
 
         </LinearLayout>
@@ -69,49 +118,7 @@
                 android:text="@string/details" />
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="4dp"
-                android:adjustViewBounds="true"
-                android:src="@drawable/calendar_month" />
-
-            <TextView
-                android:id="@+id/date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="2dp"
-                android:layout_marginEnd="2dp"
-                android:text="@string/_11_10_2001" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="4dp"
-                android:adjustViewBounds="true"
-                android:src="@drawable/clock_outline" />
-
-            <TextView
-                android:id="@+id/time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="2dp"
-                android:layout_marginEnd="2dp"
-                android:text="@string/_0_0_pm" />
-        </LinearLayout>
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>
