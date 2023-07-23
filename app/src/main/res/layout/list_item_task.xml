@@ -32,19 +32,13 @@
                 android:textSize="22sp" />
 
             <TextView
-                android:id="@+id/date"
+                android:id="@+id/dateTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="2dp"
                 android:layout_marginEnd="2dp"
-                android:text="@string/_11_10_2001" />
+                android:text="@string/_11_10_2001_12_10_pm" />
 
-            <TextView
-                android:id="@+id/time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="2dp"
-                android:text="@string/_0_0_pm" />
         </LinearLayout>
 
         <TextView
