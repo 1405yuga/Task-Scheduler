@@ -43,4 +43,18 @@ object FirestoreFunctions {
                 }
         }
     }
+
+    fun deleteTask(user: String, context: Context,documentSnapshot: DocumentSnapshot){
+        if(user!= USER_DEFAULT){
+            val firestore = FirebaseFirestore.getInstance()
+            firestore.collection(user).document(documentSnapshot.id).delete()
+                .addOnSuccessListener {
+                    Toast.makeText(context,"Task deleted",Toast.LENGTH_SHORT).show()
+                }
+                .addOnFailureListener {
+                    Toast.makeText(context,"Failed to delete task",Toast.LENGTH_SHORT).show()
+                    Log.d(TAG, it.message.toString())
+                }
+        }
+    }
 }
