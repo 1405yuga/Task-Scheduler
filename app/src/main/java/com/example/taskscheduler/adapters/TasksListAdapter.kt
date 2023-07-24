@@ -2,14 +2,29 @@ package com.example.taskscheduler.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.taskscheduler.constants.TimeConvertingFunctions.convertTimestampToDateTime
 import com.example.taskscheduler.databinding.ListItemTaskBinding
 import com.example.taskscheduler.model.Task
+import com.google.firebase.firestore.DocumentSnapshot
 
 class TasksListAdapter(private val updateList: (ArrayList<Task>) -> (Unit)) :
     ListAdapter<Task, TasksListAdapter.TaskViewHolder>(DiffCallBack) {
+
+    companion object {
+        private val DiffCallBack = object : DiffUtil.ItemCallback<Task>(){
+            override fun areItemsTheSame(oldItem: Task, newItem: Task): Boolean {
+                return oldItem == newItem
+            }
+
+            override fun areContentsTheSame(oldItem: Task, newItem: Task): Boolean {
+                return oldItem == newItem
+            }
+
+        }
+    }
 
     //holds view
     class TaskViewHolder(private val binding : ListItemTaskBinding) : RecyclerView.ViewHolder(binding.root){
