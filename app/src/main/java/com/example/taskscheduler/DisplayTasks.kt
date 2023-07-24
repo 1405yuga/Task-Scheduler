@@ -103,6 +103,7 @@ class DisplayTasks : AppCompatActivity() {
 
         binding.recyclerView.adapter = viewModel.tasksListAdapter
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        loadTasks()
 
     }
 
@@ -162,6 +163,7 @@ class DisplayTasks : AppCompatActivity() {
                     val task =
                         Task(viewModel.taskName.value!!, viewModel.taskDetails.value!!, timestamp)
                     addTask(viewModel.userEmail.value.toString(), task, applicationContext)
+                    loadTasks()
                     dialog.dismiss()
                 }
             }
