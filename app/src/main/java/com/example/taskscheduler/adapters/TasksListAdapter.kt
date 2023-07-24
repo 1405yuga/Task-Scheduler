@@ -8,13 +8,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.taskscheduler.constants.TimeConvertingFunctions.convertTimestampToDateTime
 import com.example.taskscheduler.databinding.ListItemTaskBinding
 import com.example.taskscheduler.model.Task
-import com.google.firebase.firestore.DocumentSnapshot
 
-class TasksListAdapter(private val updateList: (ArrayList<Task>) -> (Unit)) :
-    ListAdapter<Task, TasksListAdapter.TaskViewHolder>(DiffCallBack) {
+class TasksListAdapter : ListAdapter<Task, TasksListAdapter.TaskViewHolder>(DiffCallBack) {
 
     companion object {
-        private val DiffCallBack = object : DiffUtil.ItemCallback<Task>(){
+        private val DiffCallBack = object : DiffUtil.ItemCallback<Task>() {
             override fun areItemsTheSame(oldItem: Task, newItem: Task): Boolean {
                 return oldItem == newItem
             }
@@ -27,13 +25,14 @@ class TasksListAdapter(private val updateList: (ArrayList<Task>) -> (Unit)) :
     }
 
     //holds view
-    class TaskViewHolder(private val binding : ListItemTaskBinding) : RecyclerView.ViewHolder(binding.root){
-        fun bind(task : Task){
+    class TaskViewHolder(private val binding: ListItemTaskBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(task: Task) {
             binding.apply {
                 binding.apply {
                     taskName.text = task.taskName
                     details.text = task.taskDetails
-                    val(dateValue,timeValue)= convertTimestampToDateTime(task.timestamp!!)
+                    val (dateValue, timeValue) = convertTimestampToDateTime(task.timestamp!!)
                     date.text = dateValue
                     time.text = timeValue
                 }
@@ -43,7 +42,7 @@ class TasksListAdapter(private val updateList: (ArrayList<Task>) -> (Unit)) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
         return TaskViewHolder(
-            ListItemTaskBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+            ListItemTaskBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
     }
 
