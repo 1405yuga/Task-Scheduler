@@ -33,7 +33,7 @@ class TasksListAdapter(private val updateList: (ArrayList<Task>) -> (Unit)) :
     }
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
-        TODO("Not yet implemented")
+        holder.bind(getItem(position))
     }
 
 
