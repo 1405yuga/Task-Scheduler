@@ -11,7 +11,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
+import com.example.taskscheduler.adapters.TasksListAdapter
 import com.example.taskscheduler.constants.TimeConvertingFunctions.convertDateTimeToTimestamp
 import com.example.taskscheduler.constants.TimeConvertingFunctions.getFormattedDate
 import com.example.taskscheduler.constants.TimeConvertingFunctions.getFormattedTime
@@ -98,7 +100,16 @@ class DisplayTasks : AppCompatActivity() {
         }
 
         binding.addBtn.setOnClickListener { openAddDialog() }
-        getTasks(viewModel.userEmail.value.toString(), applicationContext)
+
+        binding.recyclerView.adapter = viewModel.tasksListAdapter
+        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+
+    }
+
+    private fun loadTasks(){
+        if(viewModel.userEmail.value!=null){
+            getTasks(viewModel.userEmail.value!!,applicationContext,viewModel.updateList)
+        }
 
     }
 
