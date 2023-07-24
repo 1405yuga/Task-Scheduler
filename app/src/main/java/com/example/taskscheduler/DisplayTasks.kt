@@ -5,15 +5,15 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.WindowManager
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import coil.load
-import com.example.taskscheduler.adapters.TasksListAdapter
 import com.example.taskscheduler.constants.TimeConvertingFunctions.convertDateTimeToTimestamp
 import com.example.taskscheduler.constants.TimeConvertingFunctions.getFormattedDate
 import com.example.taskscheduler.constants.TimeConvertingFunctions.getFormattedTime
@@ -102,14 +102,15 @@ class DisplayTasks : AppCompatActivity() {
         binding.addBtn.setOnClickListener { openAddDialog() }
 
         binding.recyclerView.adapter = viewModel.tasksListAdapter
-        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.layoutManager =
+            StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
         loadTasks()
 
     }
 
-    private fun loadTasks(){
-        if(viewModel.userEmail.value!=null){
-            getTasks(viewModel.userEmail.value!!,applicationContext,viewModel.updateList)
+    private fun loadTasks() {
+        if (viewModel.userEmail.value != null) {
+            getTasks(viewModel.userEmail.value!!, applicationContext, viewModel.updateList)
         }
 
     }
@@ -118,14 +119,11 @@ class DisplayTasks : AppCompatActivity() {
         val dialog = Dialog(this)
         val cardBinding = CardAddTaskBinding.inflate(layoutInflater)
         dialog.setContentView(cardBinding.root)
+        dialog.window?.setLayout(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        );
 
-        val layoutParams = WindowManager.LayoutParams()
-        layoutParams.copyFrom(dialog.window?.attributes)
-        layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT
-        layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT
-        layoutParams.horizontalMargin = 0.1f / 6
-
-        dialog.window?.attributes = layoutParams
         dialog.show()
 
         addDialogBinding(cardBinding, dialog)
@@ -144,9 +142,9 @@ class DisplayTasks : AppCompatActivity() {
             }
             addButton.setOnClickListener {
                 if (task.editText?.text.toString().trim()
-                        .isEmpty() || task.editText?.text.toString().length > 40
+                        .isEmpty() || task.editText?.text.toString().length > 30
                 ) {
-                    task.error = "Task name should be of length (1 - 40)"
+                    task.error = "Task name should be of length (1 - 30)"
                 } else if (taskDetails.editText?.text.toString().trim()
                         .isEmpty() || taskDetails.editText?.text.toString().length > 40
                 ) {
