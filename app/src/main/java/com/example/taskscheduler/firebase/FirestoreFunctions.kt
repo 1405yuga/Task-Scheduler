@@ -27,18 +27,19 @@ object FirestoreFunctions {
         }
     }
 
-    fun getTasks(user: String, context: Context) {
+    fun getTasks(user: String, context: Context,updateListLambda : (ArrayList<Task>) -> (Unit)) {
         if (user != USER_DEFAULT) {
             val firestore = FirebaseFirestore.getInstance()
             firestore.collection(user)
                 .orderBy(TIMESTAMP, Query.Direction.DESCENDING)
                 .get()
                 .addOnSuccessListener { result ->
+                    val resultData = arrayListOf<Task>()
                     for (doc in result) {
                         val task: Task = doc.toObject(Task::class.java)
-                        Log.d(TAG, "${task.taskName} ${task.taskDetails} ${task.timestamp}")
+                        resultData.add(task)
                     }
-
+                    updateListLambda(resultData)
                 }
                 .addOnFailureListener {
                     Toast.makeText(context, "Failed to load task", Toast.LENGTH_SHORT).show()
