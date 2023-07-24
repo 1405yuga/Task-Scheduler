@@ -6,6 +6,7 @@ import android.widget.Toast
 import com.example.taskscheduler.constants.ProjectConstants.TIMESTAMP
 import com.example.taskscheduler.constants.ProjectConstants.USER_DEFAULT
 import com.example.taskscheduler.model.Task
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 
@@ -27,19 +28,14 @@ object FirestoreFunctions {
         }
     }
 
-    fun getTasks(user: String, context: Context,updateListLambda : (ArrayList<Task>) -> (Unit)) {
+    fun getTasks(user: String, context: Context,updateListLambda : (List<DocumentSnapshot>) -> (Unit)) {
         if (user != USER_DEFAULT) {
             val firestore = FirebaseFirestore.getInstance()
             firestore.collection(user)
                 .orderBy(TIMESTAMP, Query.Direction.DESCENDING)
                 .get()
-                .addOnSuccessListener { result ->
-                    val resultData = arrayListOf<Task>()
-                    for (doc in result) {
-                        val task: Task = doc.toObject(Task::class.java)
-                        resultData.add(task)
-                    }
-                    updateListLambda(resultData)
+                .addOnSuccessListener {
+                    updateListLambda(it.documents)
                 }
                 .addOnFailureListener {
                     Toast.makeText(context, "Failed to load task", Toast.LENGTH_SHORT).show()

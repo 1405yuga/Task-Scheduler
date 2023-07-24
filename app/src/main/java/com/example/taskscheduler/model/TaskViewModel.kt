@@ -11,6 +11,7 @@ import com.example.taskscheduler.constants.ProjectConstants.USER_DEFAULT
 import com.example.taskscheduler.constants.TimeConvertingFunctions.getFormattedDate
 import com.example.taskscheduler.constants.TimeConvertingFunctions.getFormattedTime
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.firebase.firestore.DocumentSnapshot
 import java.time.LocalTime
 
 private const val TAG = "TaskViewModel tag"
@@ -59,7 +60,7 @@ class TaskViewModel : ViewModel() {
     }
 
     val tasksListAdapter = TasksListAdapter()
-    val updateList: (ArrayList<Task>) -> (Unit) = {
+    val updateList: (List<DocumentSnapshot>) -> (Unit) = {
         tasksListAdapter.submitList(it)
     }
 }
