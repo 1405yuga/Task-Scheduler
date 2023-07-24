@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.taskscheduler.adapters.TasksListAdapter
 import com.example.taskscheduler.constants.ProjectConstants.TASK_DEFAULT
 import com.example.taskscheduler.constants.ProjectConstants.USER_DEFAULT
 import com.example.taskscheduler.constants.TimeConvertingFunctions.getFormattedDate
@@ -57,9 +58,8 @@ class TaskViewModel : ViewModel() {
         this._taskDetails.value = details
     }
 
-
-    private val _tasksList = MutableLiveData<List<Task>>()
-    val tasksList: LiveData<List<Task>> = _tasksList
-
-    // TODO: get tasksList
+    val tasksListAdapter = TasksListAdapter()
+    val updateList: (ArrayList<Task>) -> (Unit) = {
+        tasksListAdapter.submitList(it)
+    }
 }
