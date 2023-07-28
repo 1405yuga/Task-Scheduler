@@ -12,7 +12,10 @@ import com.google.firebase.firestore.Query
 
 private const val TAG = "Firestore tag"
 
+
 object FirestoreFunctions {
+
+    private lateinit var userEmail : String
 
     fun addTask(user: String, task: Task, context: Context) {
         if (user != USER_DEFAULT) {
@@ -30,6 +33,7 @@ object FirestoreFunctions {
 
     fun getTasks(user: String, context: Context,updateListLambda : (List<DocumentSnapshot>) -> (Unit)) {
         if (user != USER_DEFAULT) {
+            this.userEmail = user
             val firestore = FirebaseFirestore.getInstance()
             firestore.collection(user)
                 .orderBy(TIMESTAMP, Query.Direction.DESCENDING)
@@ -44,12 +48,13 @@ object FirestoreFunctions {
         }
     }
 
-    fun deleteTask(user: String, context: Context,documentSnapshot: DocumentSnapshot){
-        if(user!= USER_DEFAULT){
+    fun delTask(context: Context,documentSnapshot: DocumentSnapshot){
+        if(userEmail!= USER_DEFAULT){
             val firestore = FirebaseFirestore.getInstance()
-            firestore.collection(user).document(documentSnapshot.id).delete()
+            firestore.collection(userEmail).document(documentSnapshot.id).delete()
                 .addOnSuccessListener {
                     Toast.makeText(context,"Task deleted",Toast.LENGTH_SHORT).show()
+                    Log.d(TAG, "Task deleted")
                 }
                 .addOnFailureListener {
                     Toast.makeText(context,"Failed to delete task",Toast.LENGTH_SHORT).show()
