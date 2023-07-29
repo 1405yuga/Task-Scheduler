@@ -11,11 +11,13 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import coil.load
+import com.example.taskscheduler.DataStore.PreferencesDataStore
 import com.example.taskscheduler.adapters.TasksListAdapter
 import com.example.taskscheduler.constants.TimeConvertingFunctions.convertDateTimeToTimestamp
 import com.example.taskscheduler.constants.TimeConvertingFunctions.getFormattedDate
@@ -38,6 +40,7 @@ import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import kotlinx.coroutines.launch
 import java.time.LocalTime
 
 private const val TAG = "DisplayTasks tag"
@@ -49,6 +52,7 @@ class DisplayTasks : AppCompatActivity() {
     private lateinit var firebaseUser: FirebaseUser
     private lateinit var viewModel: TaskViewModel
     private lateinit var tasksListAdapter: TasksListAdapter
+    private lateinit var preferencesDataStore: PreferencesDataStore
 
     private var isLinearLayout = false
 
@@ -72,20 +76,31 @@ class DisplayTasks : AppCompatActivity() {
         })
         setData()
         headerBinding()
+        preferencesDataStore = PreferencesDataStore(applicationContext)
+        preferencesDataStore.preferences.asLiveData().observe(this@DisplayTasks) {
+            isLinearLayout = it
+            switchLayout()
+            switchIcon(binding.topAppBar.menu.getItem(0))
+        }
+
         binding.recyclerView.adapter = tasksListAdapter
 
         binding.topAppBar.setNavigationOnClickListener {
             binding.drawerLayout.open()
         }
         binding.topAppBar.setOnMenuItemClickListener { menuItem ->
-            when(menuItem.itemId){
-                R.id.action_switch_layout ->{
+            when (menuItem.itemId) {
+                R.id.action_switch_layout -> {
                     //  change layout & change icon
                     isLinearLayout = !isLinearLayout
+                    lifecycleScope.launch {
+                        preferencesDataStore.saveLayoutPrefrence(applicationContext, isLinearLayout)
+                    }
                     switchLayout()
                     switchIcon(menuItem)
                     true
                 }
+
                 else -> false
             }
 
@@ -129,15 +144,16 @@ class DisplayTasks : AppCompatActivity() {
     }
 
     private fun switchIcon(menuItem: MenuItem?) {
-        if(menuItem == null) return
+        if (menuItem == null) return
         menuItem.icon =
             if (isLinearLayout) ContextCompat.getDrawable(this, R.drawable.staggered_layout_icon)
             else ContextCompat.getDrawable(this, R.drawable.linear_layout_icon)
     }
 
     fun switchLayout() {
-        if(isLinearLayout) binding.recyclerView.layoutManager = LinearLayoutManager(this)
-        else binding.recyclerView.layoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
+        if (isLinearLayout) binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        else binding.recyclerView.layoutManager =
+            StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
     }
 
     fun refreshList() {
