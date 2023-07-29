@@ -61,6 +61,8 @@ class TaskViewModel : ViewModel() {
 
     val tasksListAdapter = TasksListAdapter()
     val updateList: (List<DocumentSnapshot>) -> (Unit) = {
-        tasksListAdapter.submitList(it)
+        if(userEmail.value.toString() != USER_DEFAULT){
+            tasksListAdapter.submitList(it)
+        }
     }
 }

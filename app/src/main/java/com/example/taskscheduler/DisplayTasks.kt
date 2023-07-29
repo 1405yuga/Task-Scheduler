@@ -68,6 +68,9 @@ class DisplayTasks : AppCompatActivity() {
         setData()
         headerBinding()
 
+        viewModel.userEmail.observe(this@DisplayTasks) {
+            loadTasks()
+        }
         binding.topAppBar.setNavigationOnClickListener {
             binding.drawerLayout.open()
         }
@@ -104,11 +107,11 @@ class DisplayTasks : AppCompatActivity() {
         binding.recyclerView.adapter = viewModel.tasksListAdapter
         binding.recyclerView.layoutManager =
             StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
-        loadTasks()
+
 
     }
 
-    private fun loadTasks() {
+    fun loadTasks() {
         if (viewModel.userEmail.value != null) {
             getTasks(viewModel.userEmail.value!!, applicationContext, viewModel.updateList)
         }
