@@ -4,11 +4,14 @@ import android.app.Dialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -47,6 +50,8 @@ class DisplayTasks : AppCompatActivity() {
     private lateinit var viewModel: TaskViewModel
     private lateinit var tasksListAdapter: TasksListAdapter
 
+    private var isLinearLayout = false
+
     override fun onStart() {
         super.onStart()
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -67,9 +72,23 @@ class DisplayTasks : AppCompatActivity() {
         })
         setData()
         headerBinding()
+        binding.recyclerView.adapter = tasksListAdapter
 
         binding.topAppBar.setNavigationOnClickListener {
             binding.drawerLayout.open()
+        }
+        binding.topAppBar.setOnMenuItemClickListener { menuItem ->
+            when(menuItem.itemId){
+                R.id.action_switch_layout ->{
+                    //  change layout & change icon
+                    isLinearLayout = !isLinearLayout
+                    switchLayout()
+                    switchIcon(menuItem)
+                    true
+                }
+                else -> false
+            }
+
         }
 
         binding.navigationView.setNavigationItemSelectedListener { menuItem ->
@@ -100,9 +119,7 @@ class DisplayTasks : AppCompatActivity() {
         }
 
         binding.addBtn.setOnClickListener { openAddDialog() }
-        binding.recyclerView.adapter = tasksListAdapter
-        binding.recyclerView.layoutManager =
-            StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
+
 
         viewModel.tasksList.observe(this@DisplayTasks) {
             tasksListAdapter.submitList(it)
@@ -111,6 +128,17 @@ class DisplayTasks : AppCompatActivity() {
 
     }
 
+    private fun switchIcon(menuItem: MenuItem?) {
+        if(menuItem == null) return
+        menuItem.icon =
+            if (isLinearLayout) ContextCompat.getDrawable(this, R.drawable.staggered_layout_icon)
+            else ContextCompat.getDrawable(this, R.drawable.linear_layout_icon)
+    }
+
+    fun switchLayout() {
+        if(isLinearLayout) binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        else binding.recyclerView.layoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
+    }
 
     fun refreshList() {
         getTasks(applicationContext, updateListLambda = {

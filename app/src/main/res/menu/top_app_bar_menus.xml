@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_switch_layout"
-        android:icon="@drawable/staggered_layout_icon"
+        android:icon="@drawable/linear_layout_icon"
         android:title="@string/action_switch_layout"
         app:showAsAction="always"
         />
