@@ -35,5 +35,4 @@ object TimeConvertingFunctions {
         val formattedDate = format.format(selectedDate)
         return formattedDate
     }
-
 }

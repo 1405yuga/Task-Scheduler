@@ -4,7 +4,6 @@ import android.app.Dialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -15,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import coil.load
 import com.example.taskscheduler.adapters.TasksListAdapter
-import com.example.taskscheduler.constants.ProjectConstants
 import com.example.taskscheduler.constants.TimeConvertingFunctions.convertDateTimeToTimestamp
 import com.example.taskscheduler.constants.TimeConvertingFunctions.getFormattedDate
 import com.example.taskscheduler.constants.TimeConvertingFunctions.getFormattedTime
@@ -37,7 +35,6 @@ import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.firestore.DocumentSnapshot
 import java.time.LocalTime
 
 private const val TAG = "DisplayTasks tag"
@@ -57,11 +54,7 @@ class DisplayTasks : AppCompatActivity() {
             .requestEmail()
             .build()
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
-
-        Log.d(
-            TAG,
-            "user details : ${viewModel.userEmail.value} ${viewModel.userDisplayName.value} ${viewModel.userPhotoUrl.value} "
-        )
+        refreshList()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,9 +68,6 @@ class DisplayTasks : AppCompatActivity() {
         setData()
         headerBinding()
 
-        viewModel.userEmail.observe(this@DisplayTasks) {
-            refreshList()
-        }
         binding.topAppBar.setNavigationOnClickListener {
             binding.drawerLayout.open()
         }
@@ -123,12 +113,12 @@ class DisplayTasks : AppCompatActivity() {
 
 
     fun refreshList() {
-        getTasks(viewModel.userEmail.value!!, applicationContext, updateListLambda = {
+        getTasks(applicationContext, updateListLambda = {
             viewModel._tasksList.value = it
         })
     }
 
-  private fun openAddDialog() {
+    private fun openAddDialog() {
         val dialog = Dialog(this)
         val cardBinding = CardAddTaskBinding.inflate(layoutInflater)
         dialog.setContentView(cardBinding.root)
@@ -173,7 +163,7 @@ class DisplayTasks : AppCompatActivity() {
                     )
                     val task =
                         Task(viewModel.taskName.value!!, viewModel.taskDetails.value!!, timestamp)
-                    addTask(viewModel.userEmail.value.toString(), task, applicationContext)
+                    addTask(task, applicationContext)
                     refreshList()
                     dialog.dismiss()
                 }
@@ -246,24 +236,17 @@ class DisplayTasks : AppCompatActivity() {
         firebaseUser = FirebaseAuth.getInstance().currentUser!!
         //create viewmodel instance
         viewModel = ViewModelProvider(this, TaskViewModelFactory()).get(TaskViewModel::class.java)
-        viewModel.setUserData(firebaseUser.email, firebaseUser.displayName, firebaseUser.photoUrl)
     }
 
     private fun headerBinding() {
         val header = binding.navigationView.getHeaderView(0)
         header.apply {
-            viewModel.userPhotoUrl.observe(this@DisplayTasks) {
-                findViewById<ImageView>(R.id.user_image).load(it) {
-                    placeholder(R.drawable.loading_animation)
-                    error(R.drawable.account_outline)
-                }
+            findViewById<ImageView>(R.id.user_image).load(firebaseUser.photoUrl) {
+                placeholder(R.drawable.loading_animation)
+                error(R.drawable.account_outline)
             }
-            viewModel.userDisplayName.observe(this@DisplayTasks) {
-                findViewById<TextView>(R.id.user_name).text = it
-            }
-            viewModel.userEmail.observe(this@DisplayTasks) {
-                findViewById<TextView>(R.id.user_gmail).text = it
-            }
+            findViewById<TextView>(R.id.user_name).text = firebaseUser.displayName
+            findViewById<TextView>(R.id.user_gmail).text = firebaseUser.email
         }
     }
 
