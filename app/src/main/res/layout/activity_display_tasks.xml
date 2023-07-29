@@ -24,7 +24,8 @@
                 android:layout_height="?attr/actionBarSize"
                 android:elevation="0dp"
                 app:navigationIcon="@drawable/baseline_menu_24"
-                app:title="@string/app_name" />
+                app:title="@string/app_name"
+                app:menu="@menu/top_app_bar_menus"/>
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.recyclerview.widget.RecyclerView

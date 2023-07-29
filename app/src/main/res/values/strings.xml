@@ -22,4 +22,5 @@
     <string name="add">Add</string>
     <string name="new_task">NEW TASK</string>
     <string name="_11_10_2001_12_10_pm">11/10/2001 12:10 pm</string>
+    <string name="action_switch_layout">Action_switch_layout</string>
 </resources>
