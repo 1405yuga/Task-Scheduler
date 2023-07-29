@@ -14,6 +14,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import coil.load
+import com.example.taskscheduler.adapters.TasksListAdapter
+import com.example.taskscheduler.constants.ProjectConstants
 import com.example.taskscheduler.constants.TimeConvertingFunctions.convertDateTimeToTimestamp
 import com.example.taskscheduler.constants.TimeConvertingFunctions.getFormattedDate
 import com.example.taskscheduler.constants.TimeConvertingFunctions.getFormattedTime
@@ -35,6 +37,7 @@ import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.DocumentSnapshot
 import java.time.LocalTime
 
 private const val TAG = "DisplayTasks tag"
@@ -45,6 +48,7 @@ class DisplayTasks : AppCompatActivity() {
     private lateinit var mGoogleSignInClient: GoogleSignInClient
     private lateinit var firebaseUser: FirebaseUser
     private lateinit var viewModel: TaskViewModel
+    private lateinit var tasksListAdapter: TasksListAdapter
 
     override fun onStart() {
         super.onStart()
@@ -65,11 +69,12 @@ class DisplayTasks : AppCompatActivity() {
         binding = ActivityDisplayTasksBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        tasksListAdapter = TasksListAdapter()
         setData()
         headerBinding()
 
         viewModel.userEmail.observe(this@DisplayTasks) {
-            loadTasks()
+            refreshList()
         }
         binding.topAppBar.setNavigationOnClickListener {
             binding.drawerLayout.open()
@@ -103,19 +108,43 @@ class DisplayTasks : AppCompatActivity() {
         }
 
         binding.addBtn.setOnClickListener { openAddDialog() }
-
-        binding.recyclerView.adapter = viewModel.tasksListAdapter
+        binding.recyclerView.adapter = tasksListAdapter
         binding.recyclerView.layoutManager =
             StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
+
+        viewModel.tasksList.observe(this@DisplayTasks) {
+            tasksListAdapter.submitList(it)
+        }
 
 
     }
 
-    fun loadTasks() {
-        if (viewModel.userEmail.value != null) {
-            getTasks(viewModel.userEmail.value!!, applicationContext, viewModel.updateList)
+    /*
+        fun loadTasks() {
+            val updateList: (List<DocumentSnapshot>) -> (Unit) = {
+                if (viewModel.userEmail.value.toString() != ProjectConstants.USER_DEFAULT) {
+                    tasksListAdapter.submitList(it)
+                }
+            }
+            if (viewModel.userEmail.value != null) {
+                getTasks(viewModel.userEmail.value!!, applicationContext, updateList)
+            }
+
         }
 
+     */
+    val saveList: (List<DocumentSnapshot>) -> (Unit) = {
+        if (viewModel.userEmail.value.toString() != ProjectConstants.USER_DEFAULT) {
+            viewModel._tasksList.value = it
+        }
+    }
+
+    fun refreshList() {
+        getTasks(viewModel.userEmail.value!!, applicationContext, saveList)
+    }
+
+    fun refreshTest(){
+        getTasks(viewModel.userEmail.value!!, applicationContext, saveList)
     }
 
     private fun openAddDialog() {
@@ -164,7 +193,7 @@ class DisplayTasks : AppCompatActivity() {
                     val task =
                         Task(viewModel.taskName.value!!, viewModel.taskDetails.value!!, timestamp)
                     addTask(viewModel.userEmail.value.toString(), task, applicationContext)
-                    loadTasks()
+                    refreshList()
                     dialog.dismiss()
                 }
             }

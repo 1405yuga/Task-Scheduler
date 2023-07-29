@@ -61,7 +61,7 @@ object FirestoreFunctions {
             firestore.collection(userEmail).document(documentSnapshot.id).delete()
                 .addOnSuccessListener {
                     Toast.makeText(context, "Task deleted", Toast.LENGTH_SHORT).show()
-                    // TODO: refresh list 
+                    //TODO: refresh list
                     Log.d(TAG, "Task deleted")
                 }
                 .addOnFailureListener {

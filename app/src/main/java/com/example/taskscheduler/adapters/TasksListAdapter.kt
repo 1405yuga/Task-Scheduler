@@ -48,7 +48,7 @@ class TasksListAdapter :
                 date.text = dateValue
                 time.text = timeValue
                 deleteTask.setOnClickListener {
-                    //delTask(binding.root.context, documentSnapshot, refreshList)
+                    delTask(binding.root.context, documentSnapshot)
 
                 }
 

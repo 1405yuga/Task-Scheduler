@@ -59,10 +59,8 @@ class TaskViewModel : ViewModel() {
         this._taskDetails.value = details
     }
 
-    val tasksListAdapter = TasksListAdapter()
-    val updateList: (List<DocumentSnapshot>) -> (Unit) = {
-        if(userEmail.value.toString() != USER_DEFAULT){
-            tasksListAdapter.submitList(it)
-        }
-    }
+    var _tasksList = MutableLiveData(listOf<DocumentSnapshot>())
+    val tasksList : LiveData<List<DocumentSnapshot>> = _tasksList
+
 }
+
