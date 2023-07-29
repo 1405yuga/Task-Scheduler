@@ -69,7 +69,9 @@ class DisplayTasks : AppCompatActivity() {
         binding = ActivityDisplayTasksBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        tasksListAdapter = TasksListAdapter()
+        tasksListAdapter = TasksListAdapter(refreshlLambda = {
+            refreshList()
+        })
         setData()
         headerBinding()
 
@@ -119,35 +121,14 @@ class DisplayTasks : AppCompatActivity() {
 
     }
 
-    /*
-        fun loadTasks() {
-            val updateList: (List<DocumentSnapshot>) -> (Unit) = {
-                if (viewModel.userEmail.value.toString() != ProjectConstants.USER_DEFAULT) {
-                    tasksListAdapter.submitList(it)
-                }
-            }
-            if (viewModel.userEmail.value != null) {
-                getTasks(viewModel.userEmail.value!!, applicationContext, updateList)
-            }
-
-        }
-
-     */
-    val saveList: (List<DocumentSnapshot>) -> (Unit) = {
-        if (viewModel.userEmail.value.toString() != ProjectConstants.USER_DEFAULT) {
-            viewModel._tasksList.value = it
-        }
-    }
 
     fun refreshList() {
-        getTasks(viewModel.userEmail.value!!, applicationContext, saveList)
+        getTasks(viewModel.userEmail.value!!, applicationContext, updateListLambda = {
+            viewModel._tasksList.value = it
+        })
     }
 
-    fun refreshTest(){
-        getTasks(viewModel.userEmail.value!!, applicationContext, saveList)
-    }
-
-    private fun openAddDialog() {
+  private fun openAddDialog() {
         val dialog = Dialog(this)
         val cardBinding = CardAddTaskBinding.inflate(layoutInflater)
         dialog.setContentView(cardBinding.root)

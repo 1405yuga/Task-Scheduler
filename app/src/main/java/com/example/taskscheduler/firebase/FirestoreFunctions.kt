@@ -54,14 +54,16 @@ object FirestoreFunctions {
 
     fun delTask(
         context: Context,
-        documentSnapshot: DocumentSnapshot
+        documentSnapshot: DocumentSnapshot,
+        refreshlLambda: () -> Unit
     ) {
         if (userEmail != USER_DEFAULT) {
             val firestore = FirebaseFirestore.getInstance()
             firestore.collection(userEmail).document(documentSnapshot.id).delete()
                 .addOnSuccessListener {
                     Toast.makeText(context, "Task deleted", Toast.LENGTH_SHORT).show()
-                    //TODO: refresh list
+                    // refresh list
+                    refreshlLambda()
                     Log.d(TAG, "Task deleted")
                 }
                 .addOnFailureListener {

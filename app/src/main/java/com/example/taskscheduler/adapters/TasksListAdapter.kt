@@ -13,7 +13,9 @@ import com.google.firebase.firestore.DocumentSnapshot
 
 private const val TAG = "TasksListAdapter tag"
 
-class TasksListAdapter :
+class TasksListAdapter(
+    private val refreshlLambda : () -> (Unit)
+) :
     ListAdapter<DocumentSnapshot, TasksListAdapter.TaskViewHolder>(DiffCallBack) {
 
     companion object {
@@ -38,7 +40,8 @@ class TasksListAdapter :
     class TaskViewHolder(private val binding: ListItemTaskBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(
-            documentSnapshot: DocumentSnapshot
+            documentSnapshot: DocumentSnapshot,
+            refreshlLambda: () -> Unit
         ) {
             val task: Task? = documentSnapshot.toObject(Task::class.java)
             binding.apply {
@@ -48,7 +51,7 @@ class TasksListAdapter :
                 date.text = dateValue
                 time.text = timeValue
                 deleteTask.setOnClickListener {
-                    delTask(binding.root.context, documentSnapshot)
+                    delTask(binding.root.context, documentSnapshot,refreshlLambda)
 
                 }
 
@@ -63,7 +66,7 @@ class TasksListAdapter :
     }
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position),refreshlLambda)
     }
 
 
