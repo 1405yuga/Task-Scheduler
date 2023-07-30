@@ -2,6 +2,8 @@ package com.example.taskscheduler
 
 import android.app.Dialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
@@ -24,6 +26,7 @@ import com.example.taskscheduler.constants.TimeConvertingFunctions.getFormattedD
 import com.example.taskscheduler.constants.TimeConvertingFunctions.getFormattedTime
 import com.example.taskscheduler.databinding.ActivityDisplayTasksBinding
 import com.example.taskscheduler.databinding.CardAddTaskBinding
+import com.example.taskscheduler.databinding.CardSettingsLayoutBinding
 import com.example.taskscheduler.firebase.FirestoreFunctions.addTask
 import com.example.taskscheduler.firebase.FirestoreFunctions.getTasks
 import com.example.taskscheduler.model.Task
@@ -146,8 +149,6 @@ class DisplayTasks : AppCompatActivity() {
 
 
     }
-
-
 
     private fun switchIcon(menuItem: MenuItem?) {
         if (menuItem == null) return
@@ -321,8 +322,13 @@ class DisplayTasks : AppCompatActivity() {
     }
 
     private fun openSettingsDialog() {
-        TODO("Not yet implemented")
+        val dialog = Dialog(this)
+        val cardBinding = CardSettingsLayoutBinding.inflate(layoutInflater)
+        dialog.setContentView(cardBinding.root)
+        dialog.window?.setLayout(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        )
+        dialog.show()
     }
-
-
 }
