@@ -330,5 +330,15 @@ class DisplayTasks : AppCompatActivity() {
             LinearLayout.LayoutParams.WRAP_CONTENT
         )
         dialog.show()
+        
+        cardBinding.apply { 
+            clearAllTasks.setOnClickListener {
+                // TODO: clear all tasks 
+            }
+            
+            deleteAccount.setOnClickListener {
+                // TODO: clear all tasks and del account 
+            }
+        }
     }
 }
