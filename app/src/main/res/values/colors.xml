@@ -69,5 +69,7 @@
     <color name="CustomColor3">#B4ACDD</color>
     <color name="CustomColor4">#D7B9D5</color>
     <color name="CustomColor5">#FFDBEE</color>
+    <color name="red">#FA0505</color>
+    <color name="red_bg">#FAE7E7</color>
 
 </resources>

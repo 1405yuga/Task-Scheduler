@@ -24,4 +24,9 @@
     <string name="_11_10_2001_12_10_pm">11/10/2001 12:10 pm</string>
     <string name="action_switch_layout">Action_switch_layout</string>
     <string name="settings_">SETTINGS</string>
+    <string name="delete_account">Delete account</string>
+    <string name="clear_tasks">CLEAR TASKS</string>
+    <string name="once_you_clear_all_tasks_all_the_tasks_registered_will_be_removed_and_there_is_no_going_back_please_be_certain">Once you clear all tasks, all the tasks registered will be removed and there is no going back. Please be certain.</string>
+    <string name="clear_all_tasks">Clear all tasks</string>
+    <string name="once_you_delete_this_account_all_the_tasks_registered_will_be_deleted_and_there_is_no_going_back_please_be_certain">Once you delete this account, all the tasks registered will be deleted and there is no going back. Please be certain.</string>
 </resources>
