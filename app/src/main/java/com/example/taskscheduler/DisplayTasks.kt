@@ -112,6 +112,10 @@ class DisplayTasks : AppCompatActivity() {
                     openAlertDialog()
                     true
                 }
+                R.id.settings -> {
+                    openSettingsDialog()
+                    true
+                }
 
                 R.id.about -> {
                     openUrl("https://github.com/1405yuga/Task-Scheduler")
@@ -142,6 +146,8 @@ class DisplayTasks : AppCompatActivity() {
 
 
     }
+
+
 
     private fun switchIcon(menuItem: MenuItem?) {
         if (menuItem == null) return
@@ -312,6 +318,10 @@ class DisplayTasks : AppCompatActivity() {
                 dialog.dismiss()
             }
             .show()
+    }
+
+    private fun openSettingsDialog() {
+        TODO("Not yet implemented")
     }
 
 
