@@ -90,16 +90,34 @@ object FirestoreFunctions {
         skipToMainActivity: () -> Unit
     ) {
         val user = FirebaseAuth.getInstance().currentUser
+        val email = user!!.email
         if (user!!.providerData.any { it.providerId == GoogleAuthProvider.PROVIDER_ID }) {
-            user.delete()
-                .addOnSuccessListener {
-                    skipToMainActivity()
+                    user.delete()
+                        .addOnSuccessListener {
+                            // Account deleted successfully
+                            val firestore = FirebaseFirestore.getInstance()
+                            if (email != null) {
+                                firestore.collection(email).get().addOnSuccessListener { querySnapshot ->
+                                    for (query in querySnapshot) {
+                                        query.reference.delete()
+                                    }
+                                    skipToMainActivity()
+                                }.addOnFailureListener {
+                                    Toast.makeText(context, "Failed to clear task", Toast.LENGTH_SHORT).show()
+                                    Log.d(TAG, it.message.toString())
+                                }
+                            }
+                        }
+                        .addOnFailureListener { deleteException ->
+                            Toast.makeText(
+                                context,
+                                "Sign In again to confirm delete account",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            Log.d(TAG, deleteException.message.toString())
+                        }
                 }
-                .addOnFailureListener {
-                    Toast.makeText(context, "Failed to delete account", Toast.LENGTH_SHORT)
-                        .show()
-                    Log.d(TAG, it.message.toString())
-                }
+
         }
-    }
 }
+
