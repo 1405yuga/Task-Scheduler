@@ -6,6 +6,7 @@ import android.widget.Toast
 import com.example.taskscheduler.constants.ProjectConstants.TIMESTAMP
 import com.example.taskscheduler.model.Task
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -81,6 +82,24 @@ object FirestoreFunctions {
         }.addOnFailureListener {
             Toast.makeText(context, "Failed to clear task", Toast.LENGTH_SHORT).show()
             Log.d(TAG, it.message.toString())
+        }
+    }
+
+    fun deleteAccount(
+        context: Context,
+        skipToMainActivity: () -> Unit
+    ) {
+        val user = FirebaseAuth.getInstance().currentUser
+        if (user!!.providerData.any { it.providerId == GoogleAuthProvider.PROVIDER_ID }) {
+            user.delete()
+                .addOnSuccessListener {
+                    skipToMainActivity()
+                }
+                .addOnFailureListener {
+                    Toast.makeText(context, "Failed to delete account", Toast.LENGTH_SHORT)
+                        .show()
+                    Log.d(TAG, it.message.toString())
+                }
         }
     }
 }
