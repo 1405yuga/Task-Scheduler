@@ -27,6 +27,7 @@ import com.example.taskscheduler.constants.TimeConvertingFunctions.getFormattedT
 import com.example.taskscheduler.databinding.ActivityDisplayTasksBinding
 import com.example.taskscheduler.databinding.CardAddTaskBinding
 import com.example.taskscheduler.databinding.CardSettingsLayoutBinding
+import com.example.taskscheduler.firebase.FirestoreFunctions
 import com.example.taskscheduler.firebase.FirestoreFunctions.addTask
 import com.example.taskscheduler.firebase.FirestoreFunctions.getTasks
 import com.example.taskscheduler.model.Task
@@ -333,7 +334,11 @@ class DisplayTasks : AppCompatActivity() {
         
         cardBinding.apply { 
             clearAllTasks.setOnClickListener {
-                // TODO: clear all tasks 
+                FirestoreFunctions.clearTasks(applicationContext, refreshlLambda = {
+                    refreshList()
+                })
+                dialog.dismiss()
+                binding.drawerLayout.close()
             }
             
             deleteAccount.setOnClickListener {
