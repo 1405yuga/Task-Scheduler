@@ -36,7 +36,7 @@ object FirestoreFunctions {
         val firestore = FirebaseFirestore.getInstance()
         val userEmail = FirebaseAuth.getInstance().currentUser!!.email!!
         firestore.collection(userEmail)
-            .orderBy(TIMESTAMP, Query.Direction.DESCENDING)
+            .orderBy(TIMESTAMP, Query.Direction.ASCENDING)
             .get()
             .addOnSuccessListener {
                 updateListLambda(it.documents)
