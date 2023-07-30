@@ -66,4 +66,21 @@ object FirestoreFunctions {
             }
 
     }
+
+    fun clearTasks(
+        context: Context,
+        refreshlLambda: () -> Unit
+    ) {
+        val firestore = FirebaseFirestore.getInstance()
+        val userEmail = FirebaseAuth.getInstance().currentUser!!.email!!
+        firestore.collection(userEmail).get().addOnSuccessListener { querySnapshot ->
+            for (query in querySnapshot) {
+                query.reference.delete().addOnSuccessListener { refreshlLambda() }
+            }
+
+        }.addOnFailureListener {
+            Toast.makeText(context, "Failed to clear task", Toast.LENGTH_SHORT).show()
+            Log.d(TAG, it.message.toString())
+        }
+    }
 }
