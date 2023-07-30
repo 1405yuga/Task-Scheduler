@@ -2,8 +2,6 @@ package com.example.taskscheduler
 
 import android.app.Dialog
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
@@ -116,6 +114,7 @@ class DisplayTasks : AppCompatActivity() {
                     openAlertDialog()
                     true
                 }
+
                 R.id.settings -> {
                     openSettingsDialog()
                     true
@@ -308,18 +307,21 @@ class DisplayTasks : AppCompatActivity() {
             .setMessage("Are you sure you want to sign Out?")
             .setPositiveButton("Yes") { dialog, which ->
                 // Respond to positive button press
-                mGoogleSignInClient.signOut().addOnCompleteListener {
-                    val intent = Intent(this, MainActivity::class.java)
-                    dialog.dismiss()
-                    startActivity(intent)
-                    finish()
-                }
+                dialog.dismiss()
+                skipToMainActivity()
             }
             .setNegativeButton("No") { dialog, which ->
                 Toast.makeText(this, "Sign Out cancelled", Toast.LENGTH_SHORT).show()
-                dialog.dismiss()
             }
             .show()
+    }
+
+    private val skipToMainActivity: () -> (Unit) = {
+        mGoogleSignInClient.signOut().addOnCompleteListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
 
     private fun openSettingsDialog() {
@@ -331,8 +333,8 @@ class DisplayTasks : AppCompatActivity() {
             LinearLayout.LayoutParams.WRAP_CONTENT
         )
         dialog.show()
-        
-        cardBinding.apply { 
+
+        cardBinding.apply {
             clearAllTasks.setOnClickListener {
                 FirestoreFunctions.clearTasks(applicationContext, refreshlLambda = {
                     refreshList()
@@ -340,9 +342,11 @@ class DisplayTasks : AppCompatActivity() {
                 dialog.dismiss()
                 binding.drawerLayout.close()
             }
-            
+
             deleteAccount.setOnClickListener {
-                // TODO: clear all tasks and del account 
+                // TODO: clear all tasks and del account
+                dialog.dismiss()
+                FirestoreFunctions.deleteAccount(applicationContext,skipToMainActivity)
             }
         }
     }
