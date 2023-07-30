@@ -71,5 +71,7 @@
     <color name="CustomColor5">#FFDBEE</color>
     <color name="red">#FA0505</color>
     <color name="red_bg">#FAE7E7</color>
+    <color name="lightRed">#FFEEEE</color>
+    <color name="lightGreen">#EEFFEE</color>
 
 </resources>

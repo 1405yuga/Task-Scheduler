@@ -1,20 +1,26 @@
 package com.example.taskscheduler.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.taskscheduler.R
 import com.example.taskscheduler.constants.TimeConvertingFunctions.convertTimestampToDateTime
+import com.example.taskscheduler.constants.TimeConvertingFunctions.getDaysDifference
+import com.example.taskscheduler.constants.TimeConvertingFunctions.getFormattedDate
 import com.example.taskscheduler.databinding.ListItemTaskBinding
 import com.example.taskscheduler.firebase.FirestoreFunctions.delTask
 import com.example.taskscheduler.model.Task
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.firebase.firestore.DocumentSnapshot
 
 private const val TAG = "TasksListAdapter tag"
 
 class TasksListAdapter(
-    private val refreshlLambda : () -> (Unit)
+    private val refreshlLambda: () -> (Unit)
 ) :
     ListAdapter<DocumentSnapshot, TasksListAdapter.TaskViewHolder>(DiffCallBack) {
 
@@ -51,9 +57,41 @@ class TasksListAdapter(
                 date.text = dateValue
                 time.text = timeValue
                 deleteTask.setOnClickListener {
-                    delTask(binding.root.context, documentSnapshot,refreshlLambda)
+                    delTask(binding.root.context, documentSnapshot, refreshlLambda)
 
                 }
+                val today = getFormattedDate(MaterialDatePicker.todayInUtcMilliseconds())
+                val difference = getDaysDifference(today, dateValue)
+                Log.d(TAG, "compare date  $difference")
+                when {
+                    difference > 0 -> {
+                        cardView.setCardBackgroundColor(
+                            ContextCompat.getColor(
+                                binding.root.context,
+                                R.color.white
+                            )
+                        )
+                    }
+
+                    difference < 0 -> {
+                        cardView.setCardBackgroundColor(
+                            ContextCompat.getColor(
+                                binding.root.context,
+                                R.color.lightRed
+                            )
+                        )
+                    }
+
+                    else -> {
+                        cardView.setCardBackgroundColor(
+                            ContextCompat.getColor(
+                                binding.root.context,
+                                R.color.lightGreen
+                            )
+                        )
+                    }
+                }
+
 
             }
         }
@@ -66,7 +104,7 @@ class TasksListAdapter(
     }
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
-        holder.bind(getItem(position),refreshlLambda)
+        holder.bind(getItem(position), refreshlLambda)
     }
 
 
