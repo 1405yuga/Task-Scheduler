@@ -1,4 +1,4 @@
-package com.example.taskscheduler.DataStore
+package com.example.taskscheduler.dataStore
 
 import android.content.Context
 import androidx.datastore.core.DataStore

@@ -22,8 +22,8 @@ private const val TAG = "MainActivity tag"
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    lateinit var mGoogleSignInClient: GoogleSignInClient
-    var firebaseAuth = FirebaseAuth.getInstance()
+    private lateinit var mGoogleSignInClient: GoogleSignInClient
+    private var firebaseAuth = FirebaseAuth.getInstance()
 
     //check if already signed in
     override fun onStart() {
@@ -37,7 +37,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
 
         // Configure Google Sign In options
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -85,7 +84,6 @@ class MainActivity : AppCompatActivity() {
         val credentials = GoogleAuthProvider.getCredential(account.idToken, null)
         firebaseAuth.signInWithCredential(credentials).addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                val user = task.result.user
                 navigate()
             }
         }
@@ -95,12 +93,10 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, DisplayTasks::class.java)
         startActivity(intent)
         finish()
-
     }
 
     private fun signInGoogle() {
         val signInIntent: Intent = mGoogleSignInClient.signInIntent
         getResult.launch(signInIntent)
-
     }
 }

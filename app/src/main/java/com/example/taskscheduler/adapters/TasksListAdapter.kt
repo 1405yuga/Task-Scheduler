@@ -1,6 +1,5 @@
 package com.example.taskscheduler.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -17,10 +16,8 @@ import com.example.taskscheduler.model.Task
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.firebase.firestore.DocumentSnapshot
 
-private const val TAG = "TasksListAdapter tag"
-
 class TasksListAdapter(
-    private val refreshlLambda: () -> (Unit)
+    private val refreshLambda: () -> (Unit)
 ) :
     ListAdapter<DocumentSnapshot, TasksListAdapter.TaskViewHolder>(DiffCallBack) {
 
@@ -47,7 +44,7 @@ class TasksListAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(
             documentSnapshot: DocumentSnapshot,
-            refreshlLambda: () -> Unit
+            refreshLambda: () -> Unit
         ) {
             val task: Task? = documentSnapshot.toObject(Task::class.java)
             binding.apply {
@@ -57,7 +54,7 @@ class TasksListAdapter(
                 date.text = dateValue
                 time.text = timeValue
                 deleteTask.setOnClickListener {
-                    delTask(binding.root.context, documentSnapshot, refreshlLambda)
+                    delTask(binding.root.context, documentSnapshot, refreshLambda)
 
                 }
                 val today = getFormattedDate(MaterialDatePicker.todayInUtcMilliseconds())
@@ -103,7 +100,7 @@ class TasksListAdapter(
     }
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
-        holder.bind(getItem(position), refreshlLambda)
+        holder.bind(getItem(position), refreshLambda)
     }
 
 

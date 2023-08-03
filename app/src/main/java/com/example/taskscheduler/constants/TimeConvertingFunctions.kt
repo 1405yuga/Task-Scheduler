@@ -22,8 +22,8 @@ object TimeConvertingFunctions {
     fun convertDateTimeToTimestamp(date: String, time: String): Timestamp {
         val dateTimeString = "$date $time"
         val format = SimpleDateFormat("dd-MM-yyyy hh:mm a", Locale.getDefault())
-        val date = format.parse(dateTimeString)
-        return Timestamp(date!!)
+        val dateTimeFormattedString = format.parse(dateTimeString)
+        return Timestamp(dateTimeFormattedString!!)
     }
 
     // getFormatted - get values from picker
@@ -35,8 +35,7 @@ object TimeConvertingFunctions {
     fun getFormattedDate(it: Long?): String {
         val selectedDate = Date(it!!)
         val format = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
-        val formattedDate = format.format(selectedDate)
-        return formattedDate
+        return format.format(selectedDate)
     }
 
     fun getDaysDifference(date1String: String, date2String: String): Long {

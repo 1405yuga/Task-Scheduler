@@ -17,7 +17,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import coil.load
-import com.example.taskscheduler.DataStore.PreferencesDataStore
+import com.example.taskscheduler.dataStore.PreferencesDataStore
 import com.example.taskscheduler.adapters.TasksListAdapter
 import com.example.taskscheduler.constants.TimeConvertingFunctions.convertDateTimeToTimestamp
 import com.example.taskscheduler.constants.TimeConvertingFunctions.getFormattedDate
@@ -44,8 +44,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.launch
 import java.time.LocalTime
-
-private const val TAG = "DisplayTasks tag"
 
 class DisplayTasks : AppCompatActivity() {
 
@@ -107,7 +105,6 @@ class DisplayTasks : AppCompatActivity() {
             }
 
         }
-
         binding.navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.signOut -> {
@@ -141,12 +138,9 @@ class DisplayTasks : AppCompatActivity() {
         }
 
         binding.addBtn.setOnClickListener { openAddDialog() }
-
-
         viewModel.tasksList.observe(this@DisplayTasks) {
             tasksListAdapter.submitList(it)
         }
-
 
     }
 
@@ -157,13 +151,13 @@ class DisplayTasks : AppCompatActivity() {
             else ContextCompat.getDrawable(this, R.drawable.linear_layout_icon)
     }
 
-    fun switchLayout() {
+    private fun switchLayout() {
         if (isLinearLayout) binding.recyclerView.layoutManager = LinearLayoutManager(this)
         else binding.recyclerView.layoutManager =
             StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
     }
 
-    fun refreshList() {
+    private fun refreshList() {
         getTasks(applicationContext, updateListLambda = {
             viewModel._tasksList.value = it
         })
@@ -176,10 +170,8 @@ class DisplayTasks : AppCompatActivity() {
         dialog.window?.setLayout(
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
-        );
-
+        )
         dialog.show()
-
         addDialogBinding(cardBinding, dialog)
     }
 
@@ -305,12 +297,12 @@ class DisplayTasks : AppCompatActivity() {
         MaterialAlertDialogBuilder(this)
             .setTitle(resources.getString(R.string.signout))
             .setMessage("Are you sure you want to sign Out?")
-            .setPositiveButton("Yes") { dialog, which ->
+            .setPositiveButton("Yes") { dialog, _ ->
                 // Respond to positive button press
                 dialog.dismiss()
                 skipToMainActivity()
             }
-            .setNegativeButton("No") { dialog, which ->
+            .setNegativeButton("No") { _, _ ->
                 Toast.makeText(this, "Sign Out cancelled", Toast.LENGTH_SHORT).show()
             }
             .show()
@@ -344,7 +336,7 @@ class DisplayTasks : AppCompatActivity() {
             }
 
             deleteAccount.setOnClickListener {
-                // TODO: clear all tasks and del account
+                //  clear all tasks and del account
                 dialog.dismiss()
                 FirestoreFunctions.deleteAccount(applicationContext,skipToMainActivity)
             }

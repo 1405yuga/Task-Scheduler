@@ -50,7 +50,7 @@ object FirestoreFunctions {
                     val task = document.toObject(Task::class.java)
                     val (date, _) = convertTimestampToDateTime(task?.timestamp!!)
                     if (getDaysDifference(today, date) < -7) {
-                        delTask(context, document, refreshlLambda = {})
+                        delTask(context, document, refreshLambda = {})
                     } else {
                         newList.add(document)
                     }
@@ -67,13 +67,13 @@ object FirestoreFunctions {
     fun delTask(
         context: Context,
         documentSnapshot: DocumentSnapshot,
-        refreshlLambda: () -> Unit
+        refreshLambda: () -> Unit
     ) {
         val firestore = FirebaseFirestore.getInstance()
         val userEmail = FirebaseAuth.getInstance().currentUser!!.email!!
         firestore.collection(userEmail).document(documentSnapshot.id).delete()
             .addOnSuccessListener {
-                refreshlLambda()
+                refreshLambda()
                 Log.d(TAG, "Task deleted")
             }
             .addOnFailureListener {
@@ -85,13 +85,13 @@ object FirestoreFunctions {
 
     fun clearTasks(
         context: Context,
-        refreshlLambda: () -> Unit
+        refreshLambda: () -> Unit
     ) {
         val firestore = FirebaseFirestore.getInstance()
         val userEmail = FirebaseAuth.getInstance().currentUser!!.email!!
         firestore.collection(userEmail).get().addOnSuccessListener { querySnapshot ->
             for (query in querySnapshot) {
-                query.reference.delete().addOnSuccessListener { refreshlLambda() }
+                query.reference.delete().addOnSuccessListener { refreshLambda() }
             }
 
         }.addOnFailureListener {
@@ -106,7 +106,7 @@ object FirestoreFunctions {
     ) {
         val user = FirebaseAuth.getInstance().currentUser
         val email = user!!.email
-        if (user!!.providerData.any { it.providerId == GoogleAuthProvider.PROVIDER_ID }) {
+        if (user.providerData.any { it.providerId == GoogleAuthProvider.PROVIDER_ID }) {
             user.delete()
                 .addOnSuccessListener {
                     // Account deleted successfully

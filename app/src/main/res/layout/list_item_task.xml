@@ -37,7 +37,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:adjustViewBounds="true"
-                    android:src="@drawable/calendar_clock" />
+                    android:src="@drawable/calendar_clock"
+                    android:contentDescription="@string/date_and_time"/>
 
                 <TextView
                     android:id="@+id/time"
@@ -82,7 +83,8 @@
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
             android:src="@drawable/baseline_delete_24"
-            android:layout_gravity="end"/>
+            android:layout_gravity="end"
+            android:contentDescription="@string/delete_task"/>
 
     </LinearLayout>
 
