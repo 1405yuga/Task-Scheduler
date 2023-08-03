@@ -4,7 +4,11 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import com.example.taskscheduler.constants.ProjectConstants.TIMESTAMP
+import com.example.taskscheduler.constants.TimeConvertingFunctions
+import com.example.taskscheduler.constants.TimeConvertingFunctions.convertTimestampToDateTime
+import com.example.taskscheduler.constants.TimeConvertingFunctions.getDaysDifference
 import com.example.taskscheduler.model.Task
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.DocumentSnapshot
@@ -34,12 +38,24 @@ object FirestoreFunctions {
         updateListLambda: (List<DocumentSnapshot>) -> (Unit)
     ) {
         val firestore = FirebaseFirestore.getInstance()
+        val today =
+            TimeConvertingFunctions.getFormattedDate(MaterialDatePicker.todayInUtcMilliseconds())
         val userEmail = FirebaseAuth.getInstance().currentUser!!.email!!
         firestore.collection(userEmail)
             .orderBy(TIMESTAMP, Query.Direction.ASCENDING)
             .get()
             .addOnSuccessListener {
-                updateListLambda(it.documents)
+                val newList = mutableListOf<DocumentSnapshot>()
+                for (document in it.documents) {
+                    val task = document.toObject(Task::class.java)
+                    val (date, _) = convertTimestampToDateTime(task?.timestamp!!)
+                    if (getDaysDifference(today, date) < -7) {
+                        delTask(context, document, refreshlLambda = {})
+                    } else {
+                        newList.add(document)
+                    }
+                }
+                updateListLambda(newList)
             }
             .addOnFailureListener {
                 Toast.makeText(context, "Failed to load task", Toast.LENGTH_SHORT).show()
@@ -57,7 +73,6 @@ object FirestoreFunctions {
         val userEmail = FirebaseAuth.getInstance().currentUser!!.email!!
         firestore.collection(userEmail).document(documentSnapshot.id).delete()
             .addOnSuccessListener {
-                Toast.makeText(context, "Task deleted", Toast.LENGTH_SHORT).show()
                 refreshlLambda()
                 Log.d(TAG, "Task deleted")
             }
@@ -92,32 +107,33 @@ object FirestoreFunctions {
         val user = FirebaseAuth.getInstance().currentUser
         val email = user!!.email
         if (user!!.providerData.any { it.providerId == GoogleAuthProvider.PROVIDER_ID }) {
-                    user.delete()
-                        .addOnSuccessListener {
-                            // Account deleted successfully
-                            val firestore = FirebaseFirestore.getInstance()
-                            if (email != null) {
-                                firestore.collection(email).get().addOnSuccessListener { querySnapshot ->
-                                    for (query in querySnapshot) {
-                                        query.reference.delete()
-                                    }
-                                    skipToMainActivity()
-                                }.addOnFailureListener {
-                                    Toast.makeText(context, "Failed to clear task", Toast.LENGTH_SHORT).show()
-                                    Log.d(TAG, it.message.toString())
-                                }
+            user.delete()
+                .addOnSuccessListener {
+                    // Account deleted successfully
+                    val firestore = FirebaseFirestore.getInstance()
+                    if (email != null) {
+                        firestore.collection(email).get().addOnSuccessListener { querySnapshot ->
+                            for (query in querySnapshot) {
+                                query.reference.delete()
                             }
+                            skipToMainActivity()
+                        }.addOnFailureListener {
+                            Toast.makeText(context, "Failed to clear task", Toast.LENGTH_SHORT)
+                                .show()
+                            Log.d(TAG, it.message.toString())
                         }
-                        .addOnFailureListener { deleteException ->
-                            Toast.makeText(
-                                context,
-                                "Sign In again to confirm delete account",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            Log.d(TAG, deleteException.message.toString())
-                        }
+                    }
                 }
-
+                .addOnFailureListener { deleteException ->
+                    Toast.makeText(
+                        context,
+                        "Sign In again to confirm delete account",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    Log.d(TAG, deleteException.message.toString())
+                }
         }
+
+    }
 }
 

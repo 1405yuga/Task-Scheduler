@@ -62,7 +62,6 @@ class TasksListAdapter(
                 }
                 val today = getFormattedDate(MaterialDatePicker.todayInUtcMilliseconds())
                 val difference = getDaysDifference(today, dateValue)
-                Log.d(TAG, "compare date  $difference")
                 when {
                     difference > 0 -> {
                         cardView.setCardBackgroundColor(
