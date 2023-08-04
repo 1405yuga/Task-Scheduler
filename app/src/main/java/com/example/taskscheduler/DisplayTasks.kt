@@ -316,6 +316,8 @@ class DisplayTasks : AppCompatActivity() {
         }
     }
 
+
+
     private fun openSettingsDialog() {
         val dialog = Dialog(this)
         val cardBinding = CardSettingsLayoutBinding.inflate(layoutInflater)
