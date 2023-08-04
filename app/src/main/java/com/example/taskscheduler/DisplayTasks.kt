@@ -71,7 +71,7 @@ class DisplayTasks : AppCompatActivity() {
         binding = ActivityDisplayTasksBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        tasksListAdapter = TasksListAdapter(refreshlLambda = {
+        tasksListAdapter = TasksListAdapter(refreshLambda = {
             refreshList()
         })
         setData()
@@ -328,7 +328,7 @@ class DisplayTasks : AppCompatActivity() {
 
         cardBinding.apply {
             clearAllTasks.setOnClickListener {
-                FirestoreFunctions.clearTasks(applicationContext, refreshlLambda = {
+                FirestoreFunctions.clearTasks(applicationContext, refreshLambda = {
                     refreshList()
                 })
                 dialog.dismiss()
