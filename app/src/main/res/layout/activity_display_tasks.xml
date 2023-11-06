@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:openDrawer="start">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -60,7 +61,8 @@
         app:dividerInsetStart="8dp"
         app:headerLayout="@layout/header_navigation_drawer"
         app:itemIconTint="@color/md_theme_light_surfaceTint"
-        app:menu="@menu/navigate_menus" />
+        app:menu="@menu/navigate_menus"
+        app:drawerLayoutCornerSize="0dp"/>
 
 
 </androidx.drawerlayout.widget.DrawerLayout>

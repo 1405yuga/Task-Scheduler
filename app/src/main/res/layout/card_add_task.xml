@@ -105,20 +105,22 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/time"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="@dimen/clickable_min_size"
             android:layout_marginTop="6dp"
             android:backgroundTint="@color/md_theme_light_surfaceVariant"
-            app:cardCornerRadius="8dp">
+            app:cardCornerRadius="8dp"
+            android:clickable="true">
 
             <LinearLayout
-                android:id="@+id/time"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
                 android:padding="4dp"
                 android:layout_marginVertical="2dp"
-                android:layout_marginHorizontal="6dp">
+                android:layout_marginHorizontal="6dp"
+                android:gravity="center">
 
                 <TextView
                     android:id="@+id/time_text_view"
