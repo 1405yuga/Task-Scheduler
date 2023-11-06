@@ -2,4 +2,7 @@
 <resources>
     <dimen name="prompt_vertical">4dp</dimen>
     <dimen name="clickable_min_size">48dp</dimen>
+
+    <dimen name="card_horizontal_margin">12dp</dimen>
+    <dimen name="card_vertical_margin">8dp</dimen>
 </resources>
