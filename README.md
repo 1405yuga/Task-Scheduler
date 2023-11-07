@@ -73,7 +73,7 @@ User can click on three-dashed icon for navigation view for more profile orienet
 
 <img src="https://github.com/1405yuga/Task-Scheduler/assets/82303711/876af63b-2b5d-45c5-b987-a41346132409" width="273">
 
-<img src="https://github.com/1405yuga/Task-Scheduler/assets/82303711/f3a3017d-8042-493b-a055-1bb333b7cbdf" width="273">
+<img src="https://github.com/1405yuga/Task-Scheduler/assets/82303711/b8b229c7-acae-45fb-a163-7f7ce19b2271" width="273">
 
 <br />
 <br />
@@ -95,6 +95,9 @@ Account consists of ` SignOut ` menu through which user can log out from the cur
 ` Settings ` menu consists of two options to ` Clear all the task ` and ` Delete account `. ` Clear all task ` menu will remove all the tasks added and display main screen blank. ` Delete account ` menu will remove all the tasks added and delete the current signed-in account.
 
 <img src="https://github.com/1405yuga/Task-Scheduler/assets/82303711/53b7f1a4-003d-4296-b412-80638003c506" width="273">
+<img src="https://github.com/1405yuga/Task-Scheduler/assets/82303711/40e05de4-f868-4253-ac25-09b8382099d1" width="273">
+<img src="https://github.com/1405yuga/Task-Scheduler/assets/82303711/4a5a366b-c1b0-4101-a772-ae44456ef4b5" width="273">
+
 <br />
 <br />
 
